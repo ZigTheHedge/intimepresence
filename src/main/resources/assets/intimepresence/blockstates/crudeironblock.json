@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "intimepresence:crudeironblock"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+      "transform": "forge:default-block"
+    }]
+  }
+}

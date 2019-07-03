@@ -1,0 +1,25 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true },
+    "model": "intimepresence:pump.obj"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+      "transform": "forge:default-block"
+    }],
+    "facing": {
+      "north": {},
+      "south": {},
+      "west": {},
+      "east": {},
+      "up": {},
+      "down": {}
+    },
+    "is_screw": {
+      "false": { "model": "intimepresence:pump.obj" },
+      "true": { "model": "intimepresence:pump_screw.obj" }
+    }
+  }
+}

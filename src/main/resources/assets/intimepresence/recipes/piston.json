@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "intimepresence:piston"
+  },
+  "pattern": [
+    "a",
+    "a",
+    "b"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "blockCrudeIron"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "intimepresence:obsidiancauldron"
+  },
+  "pattern": [
+    "a a",
+    "aba",
+    "aaa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "obsidian"
+    },
+    "b": {
+      "item": "minecraft:cauldron"
+    }
+  }
+}

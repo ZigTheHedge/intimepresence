@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "intimepresence:cokeblock"
+  },
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "coalCoke"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true },
+    "model": "intimepresence:timemachine.obj",
+    "textures": {
+      "#None": "intimepresence:blocks/timemachine_offline"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+      "transform": "forge:default-block"
+    }],
+    "facing": {
+      "north": {},
+      "south": {},
+      "west": {},
+      "east": {},
+      "up": {},
+      "down": {}
+    },
+    "is_case_raised": {
+      "false": { "model": "intimepresence:timemachine.obj" },
+      "true": { "model": "intimepresence:timemachine_case.obj" }
+    },
+    "is_offline": {
+      "false": {
+        "textures": {
+          "#None": "intimepresence:blocks/timemachine"
+        }
+      },
+      "true": {
+        "textures": {
+          "#None": "intimepresence:blocks/timemachine_offline"
+        }
+      }
+    }
+  }
+}

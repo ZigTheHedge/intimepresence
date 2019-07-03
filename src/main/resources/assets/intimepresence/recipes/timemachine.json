@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "intimepresence:timemachine"
+  },
+  "pattern": [
+    "bdb",
+    "aca",
+    "aaa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "plateIron"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "shardsDiamond"
+    },
+    "c": {
+      "type": "forge:ore_dict",
+      "ore": "shardsDimensional"
+    },
+    "d": {
+      "item": "intimepresence:piston"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory.0": [{
+      "transform": "forge:default-block",
+      "textures": {
+        "all": "intimepresence:blocks/dimshards_gravel"
+      }
+    }],
+    "inventory.1": [{
+      "transform": "forge:default-block",
+      "textures": {
+        "all": "intimepresence:blocks/dimshards_netherrack"
+      }
+    }],
+    "inventory.2": [{
+      "transform": "forge:default-block",
+      "textures": {
+        "all": "intimepresence:blocks/dimshards_endstone"
+      }
+    }],
+    "type": {
+      "gravel": {
+        "textures": {
+          "all": "intimepresence:blocks/dimshards_gravel"
+        }
+      },
+      "netherrack": {
+        "textures": {
+          "all": "intimepresence:blocks/dimshards_netherrack"
+        }
+      },
+      "endstone": {
+        "textures": {
+          "all": "intimepresence:blocks/dimshards_endstone"
+        }
+      }
+    }
+  }
+}

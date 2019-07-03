@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "intimepresence:pump"
+  },
+  "pattern": [
+    "aba",
+    "bdb",
+    "aca"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "ingotCrudeIron"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "paneGlass"
+    },
+    "c": {
+      "item": "intimepresence:boer"
+    },
+    "d": {
+      "item": "intimepresence:reservoir"
+    }
+  }
+}

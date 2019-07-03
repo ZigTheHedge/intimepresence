@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "intimepresence:crudeironblock"
+  },
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "ingotCrudeIron"
+    }
+  }
+}

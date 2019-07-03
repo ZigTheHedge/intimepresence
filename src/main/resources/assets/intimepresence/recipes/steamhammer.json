@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "intimepresence:steamhammer"
+  },
+  "pattern": [
+    "aca",
+    "bdb",
+    "aea"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "ingotCrudeIron"
+    },
+    "b": {
+      "item": "intimepresence:reservoir"
+    },
+    "c": {
+      "item": "intimepresence:piston"
+    },
+    "d": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "e": {
+      "type": "forge:ore_dict",
+      "ore": "obsidian"
+    }
+  }
+}

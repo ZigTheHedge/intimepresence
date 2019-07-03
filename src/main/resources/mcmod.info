@@ -1,0 +1,16 @@
+[
+{
+  "modid": "intimepresence",
+  "name": "In Time Presence",
+  "description": "Allows you to setup time limit for foreign dimensions",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["ZigTheHedge"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

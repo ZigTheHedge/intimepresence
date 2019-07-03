@@ -1,0 +1,45 @@
+item.intimepresence.timebattery.name=Батарея Времени
+item.intimepresence.bioniceye.name=Бионический глаз
+item.intimepresence.dimshards.name=Пространственные осколки
+item.intimepresence.ironplate.name=Железная пластина
+item.intimepresence.goldenplate.name=Золотая пластина
+item.intimepresence.coke.name=Кокс
+item.intimepresence.crudeironingot.name=Слиток чугуна
+item.intimepresence.crudeironplate.name=Чугунная пластина
+item.intimepresence.boer.name=Винтовой бур
+item.intimepresence.piston.name=Поршень
+item.intimepresence.reservoir.name=Резервуар
+item.intimepresence.diamondshards.name=Алмазные осколки
+
+
+tile.intimepresence.steamhammer.name=Паровой молот
+tile.intimepresence.pump.name=Водный насос
+tile.intimepresence.steamfluidblock.name=Пар
+tile.intimepresence.obsidiancauldron.name=Обсидиановый котел
+tile.intimepresence.timemachine.name=Машина Времени
+tile.intimepresence.shardprocessor.name=Обработчик осколков
+tile.intimepresence.cokeblock.name=Блок кокса
+tile.intimepresence.crudeironblock.name=Блок чугуна
+tile.intimepresence.dimensionalore.gravel.name=Пространственная руда
+tile.intimepresence.dimensionalore.netherrack.name=Пространственная руда
+tile.intimepresence.dimensionalore.endstone.name=Пространственная руда
+
+fluid.steamfluid=Пар
+
+itemGroup.intimepresence=In Time Presence
+
+tank.empty=Пусто
+temperature.name=Температура
+obsidiancauldron.nolava=Отсутствует лава под блоком!
+shardprocessor.notm=Присоедините Машину Времени
+
+timebattery.mode=Режим:
+timebattery.mode.charge=Хранить Время
+timebattery.mode.discharge=Отдавать Время
+timebattery.chargelevel=Времени накоплено: %d
+
+bioniceye.tooltip=Позволяет видеть оставшееся Время. Правый клик чтобы надеть.
+bioniceye.alreadyinstalled=Бионический глаз уже установлен. Еще один не требуется.
+
+dimshards.tooltip=Само Время содержится в этих осколках.
+

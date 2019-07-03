@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "intimepresence:timebattery"
+  },
+  "pattern": [
+    "aaa",
+    "aca",
+    "b b"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "plateIron"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "shardsDiamond"
+    },
+    "c": {
+      "type": "forge:ore_dict",
+      "ore": "shardsDimensional"
+    }
+  }
+}

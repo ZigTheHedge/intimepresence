@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true },
+    "textures": {
+      "particle": "intimepresence:blocks/pigiron"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+      "model": "intimepresence:press.obj",
+      "transform": "forge:default-block"
+    }],
+    "facing": {
+      "north": {},
+      "south": {},
+      "west": {},
+      "east": {},
+      "up": {},
+      "down": {}
+    },
+    "is_piston": {
+      "false": { "model": "intimepresence:press.obj" },
+      "true": { "model": "intimepresence:press_piston.obj" }
+    },
+    "half": {
+      "upper": { "model": "intimepresence:empty"},
+      "lower": {}
+    }
+  }
+}

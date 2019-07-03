@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "intimepresence:shardprocessor"
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "plateGold"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "obsidian"
+    }
+  }
+}
