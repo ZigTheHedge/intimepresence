@@ -91,6 +91,7 @@ public class ShardProcessorGUIContainer<TE extends CommonTE, CNT extends CommonC
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        drawDefaultBackground();
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
