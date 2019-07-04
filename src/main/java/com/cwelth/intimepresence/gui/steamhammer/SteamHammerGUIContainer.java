@@ -59,6 +59,7 @@ public class SteamHammerGUIContainer<TE extends CommonTE, CNT extends CommonCont
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        drawDefaultBackground();
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         drawFluidContainer(25, 25, te.waterTank, mouseX, mouseY);
