@@ -11,7 +11,7 @@
   "key": {
     "a": {
       "type": "forge:ore_dict",
-      "ore": "coalCoke"
+      "ore": "fuelCoke"
     }
   }
 }

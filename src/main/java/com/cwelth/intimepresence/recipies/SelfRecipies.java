@@ -22,7 +22,7 @@ public class SelfRecipies {
 
         //Obsidian Cauldron
         obsidianCauldronRecipes.addRecipe(new OreIngredient("coal"), 4, new OreIngredient("sand"), 4, Ingredient.EMPTY, 0, new ItemStack(AllItems.coke), 1200);
-        obsidianCauldronRecipes.addRecipe(new OreIngredient("coalCoke"), 2, new OreIngredient("ingotIron"), 1, Ingredient.EMPTY, 0, new ItemStack(AllItems.crudeIronIngot), 300);
+        obsidianCauldronRecipes.addRecipe(new OreIngredient("fuelCoke"), 2, new OreIngredient("ingotIron"), 1, Ingredient.EMPTY, 0, new ItemStack(AllItems.crudeIronIngot), 300);
         obsidianCauldronRecipes.addRecipe(new OreIngredient("shardsDiamond"), 4, new OreIngredient("shardsDimensional"), 4, new OreIngredient("blockGlass"), 1, new ItemStack(AllItems.bionicEye), 500);
     }
 }
