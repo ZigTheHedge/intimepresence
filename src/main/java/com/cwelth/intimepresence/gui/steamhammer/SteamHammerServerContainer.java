@@ -1,11 +1,12 @@
 package com.cwelth.intimepresence.gui.steamhammer;
 
 import com.cwelth.intimepresence.gui.CommonContainer;
+import com.cwelth.intimepresence.gui.SteamHammerContainer;
 import com.cwelth.intimepresence.tileentities.SteamHammerTE;
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.IItemHandler;
 
-public class SteamHammerServerContainer extends CommonContainer<SteamHammerTE> {
+public class SteamHammerServerContainer extends SteamHammerContainer {
 
     public SteamHammerServerContainer(IInventory playerInventory, SteamHammerTE te) {
         super(playerInventory, te);

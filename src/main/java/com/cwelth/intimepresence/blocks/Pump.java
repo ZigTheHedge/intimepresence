@@ -27,6 +27,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -121,11 +122,12 @@ public class Pump extends CommonTEBlock <PumpTE> {
             PumpTE te = (PumpTE) worldIn.getTileEntity(pos);
             ItemStack heldItem = playerIn.getHeldItem(hand);
             if(!playerIn.isSneaking()) {
-                if (heldItem.getItem() == Items.BUCKET) {
-                    if (FluidUtil.interactWithFluidHandler(playerIn, hand, te.waterTank)) {
-                        //playerIn.setHeldItem(hand, new ItemStack(Items.WATER_BUCKET));
+                if (!heldItem.isEmpty()) {
+                    if(heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                        if (FluidUtil.interactWithFluidHandler(playerIn, hand, te.waterTank)) {
+                        }
+                        return true;
                     }
-                    return true;
                 }
                 return true;
             }
