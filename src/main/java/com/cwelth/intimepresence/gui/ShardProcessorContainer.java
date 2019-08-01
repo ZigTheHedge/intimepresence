@@ -19,7 +19,7 @@ public abstract class ShardProcessorContainer extends CommonContainer<ShardProce
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 //        super.transferStackInSlot(playerIn, index);
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
