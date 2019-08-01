@@ -1,0 +1,49 @@
+#TRANSLATE BY SYORI
+#DATE 21.07.2019
+#FILE VERSION 2019.1
+
+item.intimepresence.timebattery.name=Aika akku
+item.intimepresence.bioniceye.name=Bioninen silmä
+item.intimepresence.dimshards.name=Ulottuvuuden sirpalet
+item.intimepresence.ironplate.name=Rautalevy
+item.intimepresence.goldenplate.name=Kultalevy
+item.intimepresence.coke.name=Koksi
+item.intimepresence.crudeironingot.name=Valurauta harkko
+item.intimepresence.crudeironplate.name=Valurautalevy
+item.intimepresence.boer.name=Ruuvi pora
+item.intimepresence.piston.name=Мäntä
+item.intimepresence.reservoir.name=Säiliö
+item.intimepresence.diamondshards.name=Timanttisirut
+
+
+tile.intimepresence.steamhammer.name=Höyry-vasara
+tile.intimepresence.pump.name=Vesipumppu
+tile.intimepresence.steamfluidblock.name=Höyry
+tile.intimepresence.obsidiancauldron.name=Obsidiani pata
+tile.intimepresence.timemachine.name=Aikakone
+tile.intimepresence.shardprocessor.name=Sirpaleiden käsittelijä
+tile.intimepresence.cokeblock.name=Koksi kuutio
+tile.intimepresence.crudeironblock.name=Valurauta kuutio
+tile.intimepresence.dimensionalore.gravel.name=Ulottuvuuden malmi
+tile.intimepresence.dimensionalore.netherrack.name=Ulottuvuuden malmi
+tile.intimepresence.dimensionalore.endstone.name=Ulottuvuuden malmi
+
+fluid.steamfluid=Höyry
+
+itemGroup.intimepresence=In Time Presence
+
+tank.empty=Tyhjä
+temperature.name=Lämpötila
+obsidiancauldron.nolava=Laavaa puuttuu patan alta!
+shardprocessor.notm=Kiinnitä aikakone
+ranoutoftimehardcore=Aika on loppunut
+
+timebattery.mode=Tila:
+timebattery.mode.charge=Tallenna aika
+timebattery.mode.discharge=Anna aikaa
+timebattery.chargelevel=Kertynyt aika: %d
+
+bioniceye.tooltip=Antaa mahdollisuuden nähdä jäljellä olevan ajan. Paina hiiren oikea nappain pukeutuaksen.
+bioniceye.alreadyinstalled=Bioninen silmä on jo asennettu. Et tarvitse toista.
+
+dimshards.tooltip=Itse aika sisältyy näissä sirpaleissa.
