@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -154,11 +155,12 @@ public class SteamHammer extends CommonTEBlock<SteamHammerTE> {
             SteamHammerTE te = (SteamHammerTE) worldIn.getTileEntity(pos);
             ItemStack heldItem = playerIn.getHeldItem(hand);
             if(!playerIn.isSneaking()) {
-                if (heldItem.getItem() == Items.WATER_BUCKET) {
-                    if (FluidUtil.interactWithFluidHandler(playerIn, hand, te.waterTank)) {
-                        //playerIn.setHeldItem(hand, new ItemStack(Items.BUCKET));
+                if (!heldItem.isEmpty()) {
+                    if(heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                        if (FluidUtil.interactWithFluidHandler(playerIn, hand, te.waterTank)) {
+                        }
+                        return true;
                     }
-                    return true;
                 }
                 playerIn.openGui(ModMain.instance, AllGUIs.SteamHammerGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
                 return true;

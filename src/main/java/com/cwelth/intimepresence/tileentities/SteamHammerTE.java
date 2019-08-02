@@ -15,9 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -116,13 +114,15 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         {
             if(!bucketHandler.getStackInSlot(0).isEmpty())
             {
-                if(bucketHandler.getStackInSlot(0).getItem() == Items.WATER_BUCKET)
+                if(bucketHandler.getStackInSlot(0).hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
                 {
                     if(waterTank.getFluidAmount() <= 9000)
                     {
-                        FluidStack water = new FluidStack(FluidRegistry.WATER, 1000);
-                        waterTank.fill(water, true);
-                        bucketHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
+                        if(FluidUtil.getFluidContained(bucketHandler.getStackInSlot(0)) != null && FluidUtil.getFluidContained(bucketHandler.getStackInSlot(0)).getFluid() == FluidRegistry.WATER) {
+                            FluidActionResult far = FluidUtil.tryEmptyContainer(bucketHandler.getStackInSlot(0), waterTank, waterTank.getCapacity() - waterTank.getFluidAmount(), null, true);
+                            if(far.success)
+                                bucketHandler.setStackInSlot(0, far.result);
+                        }
                     }
                 }
             }
@@ -134,7 +134,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                     if(steamTank.getFluidAmount() < 10000)
                     {
                         waterTank.drain(10, true);
-                        FluidStack steam = new FluidStack(AllFluids.fluidSteam, 1);
+                        FluidStack steam = new FluidStack(AllFluids.fluidSteam, 60);
 
                         int amount = steamTank.fill(steam, true);
                     }
@@ -156,13 +156,13 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                 if(burnTime < 0)burnTime = 0;
                 temperature++;
                 if(temperature > 400)temperature = 400;
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                 markDirty();
             } else
             {
                 if(temperature > world.getBiome(pos).getTemperature(pos)){
                     temperature--;
-                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     markDirty();
                 }
             }

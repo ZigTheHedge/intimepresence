@@ -60,58 +60,59 @@ public class PumpTE extends CommonTE implements ITickable, ICapabilityProvider {
                 TileEntity teEast = world.getTileEntity(pos.east());
                 TileEntity teSouth = world.getTileEntity(pos.south());
                 TileEntity teWest = world.getTileEntity(pos.west());
-                FluidStack toFill = new FluidStack(waterTank.getFluid(), (waterTank.getFluidAmount() >= 100)? 100 : waterTank.getFluidAmount());
-                if(teNorth != null && teNorth.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.SOUTH))
-                {
-                    IFluidHandler fh = teNorth.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.SOUTH);
-                    int amount = fh.fill(toFill, false);
-                    if(amount == 100)
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(toFill.amount, true);
-                    } else
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(amount, true);
-                    }
-                } else if(teEast != null && teEast.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.WEST))
-                {
-                    IFluidHandler fh = teEast.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.WEST);
-                    int amount = fh.fill(toFill, false);
-                    if(amount == 100)
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(toFill.amount, true);
-                    } else
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(amount, true);
-                    }
-                } else if(teSouth != null && teSouth.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH))
-                {
-                    IFluidHandler fh = teSouth.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH);
-                    int amount = fh.fill(toFill, false);
-                    if(amount == 100)
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(toFill.amount, true);
-                    } else
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(amount, true);
-                    }
-                } else if(teWest != null && teWest.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.EAST))
-                {
-                    IFluidHandler fh = teWest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.EAST);
-                    int amount = fh.fill(toFill, false);
-                    if(amount == 100)
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(toFill.amount, true);
-                    } else
-                    {
-                        fh.fill(toFill, true);
-                        waterTank.drain(amount, true);
+                TileEntity teUp = world.getTileEntity(pos.up());
+                if(waterTank.getFluid() != null) {
+                    FluidStack toFill = new FluidStack(waterTank.getFluid(), (waterTank.getFluidAmount() >= 100) ? 100 : waterTank.getFluidAmount());
+                    if (teNorth != null && teNorth.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.SOUTH)) {
+                        IFluidHandler fh = teNorth.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.SOUTH);
+                        int amount = fh.fill(toFill, false);
+                        if (amount == 100) {
+                            fh.fill(toFill, true);
+                            waterTank.drain(toFill.amount, true);
+                        } else {
+                            fh.fill(toFill, true);
+                            waterTank.drain(amount, true);
+                        }
+                    } else if (teEast != null && teEast.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.WEST)) {
+                        IFluidHandler fh = teEast.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.WEST);
+                        int amount = fh.fill(toFill, false);
+                        if (amount == 100) {
+                            fh.fill(toFill, true);
+                            waterTank.drain(toFill.amount, true);
+                        } else {
+                            fh.fill(toFill, true);
+                            waterTank.drain(amount, true);
+                        }
+                    } else if (teSouth != null && teSouth.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
+                        IFluidHandler fh = teSouth.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH);
+                        int amount = fh.fill(toFill, false);
+                        if (amount == 100) {
+                            fh.fill(toFill, true);
+                            waterTank.drain(toFill.amount, true);
+                        } else {
+                            fh.fill(toFill, true);
+                            waterTank.drain(amount, true);
+                        }
+                    } else if (teWest != null && teWest.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.EAST)) {
+                        IFluidHandler fh = teWest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.EAST);
+                        int amount = fh.fill(toFill, false);
+                        if (amount == 100) {
+                            fh.fill(toFill, true);
+                            waterTank.drain(toFill.amount, true);
+                        } else {
+                            fh.fill(toFill, true);
+                            waterTank.drain(amount, true);
+                        }
+                    } else if (teUp != null && teUp.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+                        IFluidHandler fh = teUp.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
+                        int amount = fh.fill(toFill, false);
+                        if (amount == 100) {
+                            fh.fill(toFill, true);
+                            waterTank.drain(toFill.amount, true);
+                        } else {
+                            fh.fill(toFill, true);
+                            waterTank.drain(amount, true);
+                        }
                     }
                 }
             }
