@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 public class CokeBlock extends SimpleBlock {
     public CokeBlock() {
         super(Material.ROCK, "cokeblock");
-        setHarvestLevel("pickaxe", 2);
+        setHardness(3F);
         setCreativeTab(ModMain.itpCreativeTab);
     }
 

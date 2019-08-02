@@ -6,8 +6,7 @@ import net.minecraft.block.material.Material;
 public class CrudeIronBlock extends SimpleBlock {
     public CrudeIronBlock() {
         super(Material.ROCK, "crudeironblock");
-        setHarvestLevel("pickaxe", 2);
-
+        setHardness(3F);
         setCreativeTab(ModMain.itpCreativeTab);
     }
 }

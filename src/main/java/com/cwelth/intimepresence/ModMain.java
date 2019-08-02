@@ -28,17 +28,12 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.logging.Logger;
 
-/**
- * Created by zth on 24/08/16.
- */
-
-
 @Mod(modid = ModMain.MODID, name = ModMain.NAME, version = ModMain.VERSION, dependencies = "")
 public class ModMain {
 
     public static final String NAME = "In Time Presence";
     public static final String MODID = "intimepresence";
-    public static final String VERSION = "1.19";
+    public static final String VERSION = "1.191";
     public static final CreativeTabs itpCreativeTab = new ITPCreativeTab();
 
 
