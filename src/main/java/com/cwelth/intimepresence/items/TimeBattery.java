@@ -31,6 +31,7 @@ public class TimeBattery extends Item {
         setRegistryName("timebattery");
         setUnlocalizedName(ModMain.MODID + ".timebattery");
         setCreativeTab(ModMain.itpCreativeTab);
+        maxStackSize = 1;
     }
 
     @SideOnly(Side.CLIENT)
@@ -100,4 +101,6 @@ public class TimeBattery extends Item {
         }
         return super.onItemRightClick(worldIn, entityPlayer, enumHand);
     }
+
+
 }

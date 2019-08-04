@@ -28,19 +28,19 @@ public class TimeMachineTE extends CommonTE implements ITickable {
             {
                 if(caseLevel < 34) {
                     caseLevel++;
-                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     markDirty();
                 }
                 if(!isOffline) {
                     isOffline = true;
                     markDirty();
-                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                 }
             } else
             {
                 if(caseLevel > 0) {
                     caseLevel--;
-                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     markDirty();
                 } else
                 {
@@ -52,18 +52,18 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                             nbt.setInteger("charge", nbt.getInteger("charge") + 10);
                             ate.timeStored -= 10;
                             ate.markDirty();
-                            ate.getWorld().notifyBlockUpdate(attachedTE, world.getBlockState(attachedTE), world.getBlockState(attachedTE), 3);
+                            //ate.getWorld().notifyBlockUpdate(attachedTE, world.getBlockState(attachedTE), world.getBlockState(attachedTE), 3);
                             if(isOffline) {
                                 isOffline = false;
                                 markDirty();
-                                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                             }
                         } else
                         {
                             if(!isOffline) {
                                 isOffline = true;
                                 markDirty();
-                                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                             }
                         }
                     } else
@@ -71,7 +71,7 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                         if(!isOffline) {
                             isOffline = true;
                             markDirty();
-                            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                            //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                         }
                     }
                 }
@@ -79,10 +79,22 @@ public class TimeMachineTE extends CommonTE implements ITickable {
         }
     }
 
+    @Override
+    public void updateTEFromPacket(int[] params) {
+        caseLevel = params[0];
+        isPowered = (params[1] == 1);
+        isOffline = (params[2] == 1);
+    }
+
+    public void sendUpdates()
+    {
+
+    }
+
     public void setActive(boolean isActive)
     {
         isPowered = isActive;
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
         markDirty();
     }
 
