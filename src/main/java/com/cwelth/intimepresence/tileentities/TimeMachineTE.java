@@ -1,12 +1,15 @@
 package com.cwelth.intimepresence.tileentities;
 
+import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.items.AllItems;
 import com.cwelth.intimepresence.items.TimeBattery;
+import com.cwelth.intimepresence.network.SyncTESRAnim;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class TimeMachineTE extends CommonTE implements ITickable {
 
@@ -28,42 +31,43 @@ public class TimeMachineTE extends CommonTE implements ITickable {
             {
                 if(caseLevel < 34) {
                     caseLevel++;
-                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     markDirty();
+                    sendUpdates();
                 }
                 if(!isOffline) {
                     isOffline = true;
                     markDirty();
-                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                    sendUpdates();
                 }
             } else
             {
                 if(caseLevel > 0) {
                     caseLevel--;
-                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     markDirty();
+                    sendUpdates();
                 } else
                 {
                     if(attachedTE != null && !caseSlot.isEmpty() && caseSlot.getItem() == AllItems.timeBattery)
                     {
                         ShardProcessorTE ate = (ShardProcessorTE)world.getTileEntity(attachedTE);
-                        if(ate.timeStored >= 10) {
+                        if(ate != null && ate.timeStored >= 10) {
                             NBTTagCompound nbt = caseSlot.getTagCompound();
                             nbt.setInteger("charge", nbt.getInteger("charge") + 10);
                             ate.timeStored -= 10;
                             ate.markDirty();
+                            ate.sendUpdates();
                             //ate.getWorld().notifyBlockUpdate(attachedTE, world.getBlockState(attachedTE), world.getBlockState(attachedTE), 3);
                             if(isOffline) {
                                 isOffline = false;
                                 markDirty();
-                                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                                world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
                             }
                         } else
                         {
                             if(!isOffline) {
                                 isOffline = true;
                                 markDirty();
-                                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                                world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
                             }
                         }
                     } else
@@ -71,7 +75,7 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                         if(!isOffline) {
                             isOffline = true;
                             markDirty();
-                            //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                            world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
                         }
                     }
                 }
@@ -88,13 +92,19 @@ public class TimeMachineTE extends CommonTE implements ITickable {
 
     public void sendUpdates()
     {
-
+        ModMain.network.sendToAllAround(new SyncTESRAnim(this, caseLevel, (isPowered)?1:0, (isOffline)?1:0),
+                new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        (double)getPos().getX(),
+                        (double)getPos().getY(),
+                        (double)getPos().getZ(),
+                        16D
+                        ));
     }
 
     public void setActive(boolean isActive)
     {
         isPowered = isActive;
-        //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
         markDirty();
     }
 

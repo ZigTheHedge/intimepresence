@@ -31,6 +31,10 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
     public int burnTime = 0;
     public int initialBurnTime = 0;
 
+    public int tickDelay = 10;
+    public boolean markedForUpdate = false;
+    public boolean isGUIopened = false;
+
     public FluidTank waterTank;
     public FluidTank steamTank;
 
@@ -49,23 +53,24 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                 SteamHammerTE.this.markDirty();
+                markedForUpdate = true;
             }
         };
         steamTank = new FluidTank(10000) {
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                 SteamHammerTE.this.markDirty();
+                markedForUpdate = true;
             }
         };
 
         outputHandler = new ItemStackHandler(1) {
             @Override
             protected void onContentsChanged(int slot) {
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                if(isGUIopened)
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 SteamHammerTE.this.markDirty();
             }
         };
@@ -73,7 +78,8 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         bucketHandler = new ItemStackHandler(1) {
             @Override
             protected void onContentsChanged(int slot) {
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                if(isGUIopened)
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 SteamHammerTE.this.markDirty();
             }
         };
@@ -81,7 +87,8 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         fuelHandler = new ItemStackHandler(1) {
             @Override
             protected void onContentsChanged(int slot) {
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                if(isGUIopened)
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 SteamHammerTE.this.markDirty();
             }
         };
@@ -89,6 +96,19 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         horizontalItemHandler = new SidedItemHandler(itemStackHandler, outputHandler, 1);
         verticaalItemHandler = new SidedItemHandler(fuelHandler, outputHandler, 1);
 
+    }
+
+    @Override
+    public boolean prepareGUIToBeOpened(boolean shouldOpen) {
+        if(shouldOpen) {
+            if(isGUIopened) return false;
+            isGUIopened = true;
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+            return true;
+        } else {
+            isGUIopened = false;
+            return true;
+        }
     }
 
     public boolean checkValidRecipe()
@@ -112,6 +132,17 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
     public void update() {
         if(!world.isRemote)
         {
+            if(markedForUpdate)
+            {
+                tickDelay--;
+                if(tickDelay == 0)
+                {
+                    tickDelay = 10;
+                    markedForUpdate = false;
+                    if(isGUIopened)
+                        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                }
+            }
             if(!bucketHandler.getStackInSlot(0).isEmpty())
             {
                 if(bucketHandler.getStackInSlot(0).hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
@@ -120,8 +151,10 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                     {
                         if(FluidUtil.getFluidContained(bucketHandler.getStackInSlot(0)) != null && FluidUtil.getFluidContained(bucketHandler.getStackInSlot(0)).getFluid() == FluidRegistry.WATER) {
                             FluidActionResult far = FluidUtil.tryEmptyContainer(bucketHandler.getStackInSlot(0), waterTank, waterTank.getCapacity() - waterTank.getFluidAmount(), null, true);
-                            if(far.success)
+                            if(far.success) {
                                 bucketHandler.setStackInSlot(0, far.result);
+                                markedForUpdate = true;
+                            }
                         }
                     }
                 }
@@ -137,6 +170,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                         FluidStack steam = new FluidStack(AllFluids.fluidSteam, 60);
 
                         int amount = steamTank.fill(steam, true);
+                        markedForUpdate = true;
                     }
                 }
             }
@@ -156,14 +190,16 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                 if(burnTime < 0)burnTime = 0;
                 temperature++;
                 if(temperature > 400)temperature = 400;
-                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                 markDirty();
+                markedForUpdate = true;
+
             } else
             {
                 if(temperature > world.getBiome(pos).getTemperature(pos)){
                     temperature--;
-                    //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
                     markDirty();
+                    markedForUpdate = true;
+
                 }
             }
         }
@@ -180,11 +216,6 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                     world.playSound((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
                     workCountdown--;
                     if(!world.isRemote) {
-                        /*
-                        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-                        markDirty();
-
-                         */
                         double x = (double) pos.getX() + 0.5D;
                         double y = (double) pos.getY() + 1.0D;
                         double z = (double) pos.getZ() + 0.5D;
@@ -203,13 +234,6 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                 if (currentPistonPosition > 50) {
                     currentPistonPosition = 50;
                     delta = -1;
-                    /*
-                    if(!world.isRemote) {
-                        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-                        markDirty();
-                    }
-
-                     */
                 }
             }
         } else
@@ -261,6 +285,11 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         if (compound.hasKey("bucketHandler")) bucketHandler.deserializeNBT((NBTTagCompound) compound.getTag("bucketHandler"));
         if (compound.hasKey("fuelHandler")) fuelHandler.deserializeNBT((NBTTagCompound) compound.getTag("fuelHandler"));
         if (compound.hasKey("recipeResult")) recipeResult = new ItemStack((NBTTagCompound) compound.getTag("recipeResult"));
+        if(compound.hasKey("tickDelay"))
+            tickDelay = compound.getInteger("tickDelay");
+        if(compound.hasKey("markedForUpdate"))
+            markedForUpdate = compound.getBoolean("markedForUpdate");
+
     }
 
     @Override
@@ -279,6 +308,8 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         compound.setTag("bucketHandler", bucketHandler.serializeNBT());
         compound.setTag("fuelHandler", fuelHandler.serializeNBT());
         compound.setTag("recipeResult", recipeResult.serializeNBT());
+        compound.setInteger("tickDelay", tickDelay);
+        compound.setBoolean("markedForUpdate", markedForUpdate);
         return compound;
     }
 

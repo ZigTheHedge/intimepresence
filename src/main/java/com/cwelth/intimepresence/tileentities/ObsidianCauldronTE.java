@@ -21,10 +21,13 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
 
     public int workCycle = 0;
     public int workCycleTotal = 0;
+
+    public boolean isGUIopened = false;
+
     public ItemStackHandler outputHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             ObsidianCauldronTE.this.markDirty();
         }
     };
@@ -119,7 +122,7 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
                 }
                 recipeResult = foundRecipe.out.copy();
                 workCycleTotal = workCycle = foundRecipe.workCycles;
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 ObsidianCauldronTE.this.markDirty();
             }
         }
@@ -148,6 +151,20 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
             }
         } else {
             if(!world.isRemote)checkValidRecipe();
+        }
+    }
+
+
+    @Override
+    public boolean prepareGUIToBeOpened(boolean shouldOpen) {
+        if(shouldOpen) {
+            if(isGUIopened) return false;
+            isGUIopened = true;
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+            return true;
+        } else {
+            isGUIopened = false;
+            return true;
         }
     }
 

@@ -47,13 +47,14 @@ public class SyncTESRAnim implements IMessage {
 
     }
 
-    public static class Handler implements IMessageHandler<SyncSteamHammer, IMessage> {
+    public static class Handler implements IMessageHandler<SyncTESRAnim, IMessage> {
         @Override
-        public IMessage onMessage(SyncSteamHammer message, MessageContext ctx) {
+        public IMessage onMessage(SyncTESRAnim message, MessageContext ctx) {
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 Minecraft mc = Minecraft.getMinecraft();
                 CommonTE te = (CommonTE)mc.world.getTileEntity(message.tePos);
-                te.
+                if(te != null)
+                    te.updateTEFromPacket(message.params);
             });
             return null;
         }

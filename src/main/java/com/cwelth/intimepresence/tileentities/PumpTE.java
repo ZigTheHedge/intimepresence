@@ -35,7 +35,7 @@ public class PumpTE extends CommonTE implements ITickable, ICapabilityProvider {
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 PumpTE.this.markDirty();
             }
         };
@@ -124,7 +124,7 @@ public class PumpTE extends CommonTE implements ITickable, ICapabilityProvider {
         isPowered = isActive;
         if(isPowered)
             workCycle = 20;
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
         markDirty();
     }
 

@@ -113,12 +113,12 @@ public class TimeMachine extends CommonTEBlock<TimeMachineTE> {
         if (!worldIn.isRemote) {
             TimeMachineTE te = (TimeMachineTE) worldIn.getTileEntity(pos);
 
+            attachTE(worldIn, pos);
             if (worldIn.isBlockPowered(pos)) {
                 te.setActive(true);
             } else {
                 te.setActive(false);
             }
-            attachTE(worldIn, pos);
         }
     }
 
@@ -156,19 +156,18 @@ public class TimeMachine extends CommonTEBlock<TimeMachineTE> {
             TileEntity east = worldIn.getTileEntity(pos.east());
             TileEntity south = worldIn.getTileEntity(pos.south());
             TileEntity west = worldIn.getTileEntity(pos.west());
-            if (north != null && north instanceof ShardProcessorTE) {
+            if (north instanceof ShardProcessorTE) {
                 te.attachedTE = pos.north();
-            } else if (east != null && east instanceof ShardProcessorTE) {
+            } else if (east instanceof ShardProcessorTE) {
                 te.attachedTE = pos.east();
-            } else if (south != null && south instanceof ShardProcessorTE) {
+            } else if (south instanceof ShardProcessorTE) {
                 te.attachedTE = pos.south();
-            } else if (west != null && west instanceof ShardProcessorTE) {
+            } else if (west instanceof ShardProcessorTE) {
                 te.attachedTE = pos.west();
             } else
                 te.attachedTE = null;
             te.markDirty();
-            te.getWorld().notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
-
+            te.getWorld().notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 2);
         }
 
     }

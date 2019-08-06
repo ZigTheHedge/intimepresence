@@ -2,6 +2,7 @@ package com.cwelth.intimepresence.gui.steamhammer;
 
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.CommonContainer;
+import com.cwelth.intimepresence.network.SyncGUIOpened;
 import com.cwelth.intimepresence.renderers.ClientUtils;
 import com.cwelth.intimepresence.tileentities.CommonTE;
 import com.cwelth.intimepresence.tileentities.SteamHammerTE;
@@ -146,5 +147,8 @@ public class SteamHammerGUIContainer<TE extends CommonTE, CNT extends CommonCont
         GlStateManager.popMatrix();
     }
 
-
+    @Override
+    public void onGuiClosed() {
+        ModMain.network.sendToServer(new SyncGUIOpened(te));
+    }
 }

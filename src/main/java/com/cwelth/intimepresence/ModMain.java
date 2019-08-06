@@ -7,7 +7,8 @@ import com.cwelth.intimepresence.gui.ITPCreativeTab;
 import com.cwelth.intimepresence.gui.GUIHandler;
 import com.cwelth.intimepresence.items.AllItems;
 import com.cwelth.intimepresence.network.SyncAllCaps;
-import com.cwelth.intimepresence.network.SyncSteamHammer;
+import com.cwelth.intimepresence.network.SyncGUIOpened;
+import com.cwelth.intimepresence.network.SyncTESRAnim;
 import com.cwelth.intimepresence.network.SyncTimer;
 import com.cwelth.intimepresence.oregen.OreGen;
 import com.cwelth.intimepresence.player.CapabilityEvents;
@@ -33,7 +34,7 @@ public class ModMain {
 
     public static final String NAME = "In Time Presence";
     public static final String MODID = "intimepresence";
-    public static final String VERSION = "1.191";
+    public static final String VERSION = "1.194";
     public static final CreativeTabs itpCreativeTab = new ITPCreativeTab();
 
 
@@ -65,9 +66,11 @@ public class ModMain {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
 
+        network.registerMessage(SyncTESRAnim.Handler.class, SyncTESRAnim.class, 0, Side.CLIENT);
         network.registerMessage(SyncAllCaps.Handler.class, SyncAllCaps.class, 1, Side.CLIENT);
         network.registerMessage(SyncTimer.Handler.class, SyncTimer.class, 2, Side.CLIENT);
-        network.registerMessage(SyncSteamHammer.Handler.class, SyncSteamHammer.class, 3, Side.CLIENT);
+        network.registerMessage(SyncGUIOpened.Handler.class, SyncGUIOpened.class, 3, Side.SERVER);
+        //network.registerMessage(SyncSteamHammer.Handler.class, SyncSteamHammer.class, 3, Side.CLIENT);
 
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
 

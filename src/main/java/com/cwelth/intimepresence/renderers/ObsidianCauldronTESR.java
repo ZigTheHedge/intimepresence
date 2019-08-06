@@ -45,6 +45,7 @@ public class ObsidianCauldronTESR extends TileEntitySpecialRenderer {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderHelper.disableStandardItemLighting();
 
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder buffer = tess.getBuffer();

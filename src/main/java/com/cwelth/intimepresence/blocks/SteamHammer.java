@@ -162,7 +162,8 @@ public class SteamHammer extends CommonTEBlock<SteamHammerTE> {
                         return true;
                     }
                 }
-                playerIn.openGui(ModMain.instance, AllGUIs.SteamHammerGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                if(te.prepareGUIToBeOpened(true))
+                    playerIn.openGui(ModMain.instance, AllGUIs.SteamHammerGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
                 return true;
             }
         }

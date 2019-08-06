@@ -110,8 +110,12 @@ public class ObsidianCauldron extends CommonTEBlock<ObsidianCauldronTE> {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote) {
             if (!playerIn.isSneaking()) {
-                playerIn.openGui(ModMain.instance, AllGUIs.ObsidianCauldronGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
-                return true;
+                ObsidianCauldronTE te = (ObsidianCauldronTE)worldIn.getTileEntity(pos);
+                if(te != null) {
+                    if(te.prepareGUIToBeOpened(true))
+                        playerIn.openGui(ModMain.instance, AllGUIs.ObsidianCauldronGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                    return true;
+                }
             }
         }
         return true;

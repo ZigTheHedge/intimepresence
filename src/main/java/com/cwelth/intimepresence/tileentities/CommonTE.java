@@ -37,6 +37,11 @@ public class CommonTE extends TileEntity {
 
     }
 
+    public boolean prepareGUIToBeOpened(boolean shouldOpen)
+    {
+        return true;
+    }
+
     public boolean canInteractWith(EntityPlayer playerIn) {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
@@ -72,7 +77,7 @@ public class CommonTE extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         super.onDataPacket(net, packet);
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
         this.readFromNBT(packet.getNbtCompound());
     }
 

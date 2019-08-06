@@ -1,7 +1,9 @@
 package com.cwelth.intimepresence.tileentities;
 
+import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.ShardProcessorItemHandler;
 import com.cwelth.intimepresence.items.AllItems;
+import com.cwelth.intimepresence.network.SyncTESRAnim;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -13,6 +15,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -25,11 +28,13 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
     public int timeStored = 0;
     public BlockPos attachedTE = null;
 
+    public boolean isGUIopened = false;
+
     public ItemStackHandler enderPearlSlot = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             ShardProcessorTE.this.markDirty();
         }
     };
@@ -38,7 +43,8 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+            if(isGUIopened)
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             ShardProcessorTE.this.markDirty();
         }
     };
@@ -76,7 +82,8 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                     }
                 }
                 markDirty();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                sendUpdates();
+                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             }
             if(pearlTime > 0 && burnTime > 0)
             {
@@ -89,14 +96,16 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                     }
                 }
                 markDirty();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                sendUpdates();
+                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             }
             if(shardTime > 0 && pearlTime > 0 && burnTime > 0)
             {
                 shardTime--;
                 timeStored++;
                 markDirty();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                sendUpdates();
+                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             }
         }
     }
@@ -129,6 +138,39 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
         compound.setTag("shardsStackHandler", dimshardsSlot.serializeNBT());
         if(attachedTE != null) compound.setTag("attachedTE", NBTUtil.createPosTag(attachedTE));
         return compound;
+    }
+
+    @Override
+    public void updateTEFromPacket(int[] params) {
+        burnTimeInitial = params[0];
+        burnTime = params[1];
+        pearlTime = params[2];
+        shardTime = params[3];
+        timeStored = params[4];
+    }
+
+    public void sendUpdates()
+    {
+        ModMain.network.sendToAllAround(new SyncTESRAnim(this, burnTimeInitial, burnTime, pearlTime, shardTime, timeStored),
+                new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        (double)getPos().getX(),
+                        (double)getPos().getY(),
+                        (double)getPos().getZ(),
+                        16D
+                ));
+    }
+
+    @Override
+    public boolean prepareGUIToBeOpened(boolean shouldOpen) {
+        if(shouldOpen) {
+            if(isGUIopened) return false;
+            isGUIopened = true;
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+            return true;
+        } else {
+            isGUIopened = false;
+            return true;
+        }
     }
 
     @Override

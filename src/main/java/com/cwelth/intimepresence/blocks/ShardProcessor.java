@@ -93,8 +93,12 @@ public class ShardProcessor extends CommonTEBlock<ShardProcessorTE> {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote) {
             if (!playerIn.isSneaking()) {
-                playerIn.openGui(ModMain.instance, AllGUIs.ShardProcessorGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
-                return true;
+                ShardProcessorTE te = (ShardProcessorTE)worldIn.getTileEntity(pos);
+                if(te != null) {
+                    if(te.prepareGUIToBeOpened(true))
+                        playerIn.openGui(ModMain.instance, AllGUIs.ShardProcessorGUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                    return true;
+                }
             }
         }
         return true;
@@ -109,22 +113,22 @@ public class ShardProcessor extends CommonTEBlock<ShardProcessorTE> {
             TileEntity east = worldIn.getTileEntity(pos.east());
             TileEntity south = worldIn.getTileEntity(pos.south());
             TileEntity west = worldIn.getTileEntity(pos.west());
-            if(north != null && north instanceof TimeMachineTE)
+            if(north instanceof TimeMachineTE)
             {
                 te.attachedTE = pos.north();
-            } else if(east != null && east instanceof TimeMachineTE)
+            } else if(east instanceof TimeMachineTE)
             {
                 te.attachedTE = pos.east();
-            } else if(south != null && south instanceof TimeMachineTE)
+            } else if(south instanceof TimeMachineTE)
             {
                 te.attachedTE = pos.south();
-            } else if(west != null && west instanceof TimeMachineTE)
+            } else if(west instanceof TimeMachineTE)
             {
                 te.attachedTE = pos.west();
             } else
                 te.attachedTE = null;
             te.markDirty();
-            te.getWorld().notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
+            te.getWorld().notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 2);
 
         }
 

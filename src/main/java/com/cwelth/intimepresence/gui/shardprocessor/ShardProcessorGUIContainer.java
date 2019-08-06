@@ -3,6 +3,7 @@ package com.cwelth.intimepresence.gui.shardprocessor;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.ClientPresenceTimeRenderer;
 import com.cwelth.intimepresence.gui.CommonContainer;
+import com.cwelth.intimepresence.network.SyncGUIOpened;
 import com.cwelth.intimepresence.tileentities.CommonTE;
 import com.cwelth.intimepresence.tileentities.ObsidianCauldronTE;
 import com.cwelth.intimepresence.tileentities.ShardProcessorTE;
@@ -108,5 +109,11 @@ public class ShardProcessorGUIContainer<TE extends CommonTE, CNT extends CommonC
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
         renderHoveredToolTip(mouseX, mouseY);
+    }
+
+
+    @Override
+    public void onGuiClosed() {
+        ModMain.network.sendToServer(new SyncGUIOpened(te));
     }
 }
