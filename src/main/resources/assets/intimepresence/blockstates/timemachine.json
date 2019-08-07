@@ -1,24 +1,17 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "custom": {
-      "flip-v": true
-    },
+    "custom": { "flip-v": true },
     "model": "intimepresence:timemachine.obj",
     "textures": {
-      "#energi": "intimepresence:blocks/timemachine_offline",
-      "#box": "intimepresence:blocks/cast_iron"
+      "#None": "intimepresence:blocks/timemachine_offline"
     }
   },
   "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": [
-      {
-        "transform": "forge:default-block"
-      }
-    ],
+    "normal": [{}],
+    "inventory": [{
+      "transform": "forge:default-block"
+    }],
     "facing": {
       "north": {},
       "south": {},
@@ -28,26 +21,18 @@
       "down": {}
     },
     "is_case_raised": {
-      "false": {
-        "model": "intimepresence:timemachine.obj"
-      },
-      "true": {
-        "model": "intimepresence:timemachine_case.obj",
-        "textures": {
-          "#dowen": "intimepresence:blocks/pigiron",
-          "#box": "intimepresence:blocks/cast_iron"
-        }
-      }
+      "false": { "model": "intimepresence:timemachine.obj" },
+      "true": { "model": "intimepresence:timemachine_case.obj" }
     },
     "is_offline": {
       "false": {
         "textures": {
-          "#energi": "intimepresence:blocks/timemachine"
+          "#None": "intimepresence:blocks/timemachine"
         }
       },
       "true": {
         "textures": {
-          "#energi": "intimepresence:blocks/timemachine_offline"
+          "#None": "intimepresence:blocks/timemachine_offline"
         }
       }
     }

@@ -2,11 +2,9 @@
   "forge_marker": 1,
   "defaults": {
     "custom": { "flip-v": true },
-    "model": "intimepresence:shard_processor.obj",
+    "model": "intimepresence:pump.obj",
     "textures": {
-      "#box": "blocks/gold_block",
-      "#substrate": "intimepresence:blocks/cast_iron"
-
+      "#Material": "blocks/gold_block"
     }
   },
   "variants": {
