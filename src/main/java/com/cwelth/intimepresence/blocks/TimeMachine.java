@@ -102,6 +102,7 @@ public class TimeMachine extends CommonTEBlock<TimeMachineTE> {
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TimeMachineTE te = (TimeMachineTE)worldIn.getTileEntity(pos);
         if(te != null) {
+            //ModMain.logger.info("getActualState: " + te.isOffline + ", isRemote: " + te.getWorld().isRemote);
             return state.withProperty(IS_CASE_RAISED, false).withProperty(IS_OFFLINE, te.isOffline);
         }
         else

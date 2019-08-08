@@ -1,5 +1,9 @@
 package com.cwelth.intimepresence.tileentities;
 
+import com.cwelth.intimepresence.ModMain;
+import com.cwelth.intimepresence.blocks.ObsidianCauldron;
+import com.cwelth.intimepresence.network.SyncObsidianCauldron;
+import com.cwelth.intimepresence.network.SyncShardProcessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -10,6 +14,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -24,9 +29,17 @@ public class CommonTE extends TileEntity {
         itemStackHandler = new ItemStackHandler(INVSIZE) {
             @Override
             protected void onContentsChanged(int slot) {
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-                CommonTE.this.markDirty();
-
+                if(!CommonTE.this.world.isRemote) {
+                    CommonTE.this.markDirty();
+                    if (CommonTE.this instanceof ObsidianCauldronTE) {
+                        ModMain.network.sendToAllAround(new SyncObsidianCauldron((ObsidianCauldronTE) CommonTE.this), new NetworkRegistry.TargetPoint(CommonTE.this.world.provider.getDimension(),
+                                CommonTE.this.pos.getX(), CommonTE.this.pos.getY(), CommonTE.this.pos.getZ(), 64D));
+                    }
+                    if (CommonTE.this instanceof ShardProcessorTE) {
+                        ModMain.network.sendToAllAround(new SyncShardProcessor((ShardProcessorTE) CommonTE.this), new NetworkRegistry.TargetPoint(CommonTE.this.world.provider.getDimension(),
+                                CommonTE.this.pos.getX(), CommonTE.this.pos.getY(), CommonTE.this.pos.getZ(), 64D));
+                    }
+                }
             }
         };
 
@@ -77,7 +90,10 @@ public class CommonTE extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         super.onDataPacket(net, packet);
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+        if(this instanceof TimeMachineTE)
+            if(((TimeMachineTE)this).isOffline != packet.getNbtCompound().getBoolean("isOffline"))
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+
         this.readFromNBT(packet.getNbtCompound());
     }
 

@@ -1,7 +1,9 @@
 package com.cwelth.intimepresence.gui;
 
+import com.cwelth.intimepresence.Config;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.player.GhostPlayerProvider;
+import com.cwelth.intimepresence.player.GhostUtils;
 import com.cwelth.intimepresence.player.IGhostPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -23,7 +25,7 @@ public class ClientPresenceTimeRenderer extends Gui {
 
         IGhostPlayer player = mc.player.getCapability(GhostPlayerProvider.GHOST_PLAYER_CAPABILITY, null);
 
-        if(player.getHudInstalled()) {
+        if(player.getHudInstalled() && (Config.hudVisible || !GhostUtils.allowedToRoam(mc.player.dimension))) {
             int presenceTime = player.getPresenceTime();
 
             if (presenceTime < 36000 && presenceTime >= 12000) GlStateManager.color(1F, 1F, 0F, 1F);

@@ -54,6 +54,8 @@ public class Config {
     public static int spawnDimension = 0;
     public static boolean spawnForced = false;
 
+    public static boolean hudVisible = true;
+
     public static void readConfig() {
         Configuration cfg = CommonProxy.config;
         try {
@@ -72,13 +74,14 @@ public class Config {
 
     private static void initGeneralConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_GENERAL, "General configuration");
-        List<String> order = new ArrayList(Arrays.asList( "dimensionsList", "isWhiteList", "initialDimension", "initialTime", "keepInventoryOnDeathInForeignDimensions", "hardcoreTimeLimit" ));
+        List<String> order = new ArrayList(Arrays.asList( "dimensionsList", "isWhiteList", "initialDimension", "initialTime", "keepInventoryOnDeathInForeignDimensions", "hardcoreTimeLimit", "hudVisible"));
         dimensionsList = cfg.get(CATEGORY_GENERAL, "dimensionsList", dimensionsList, "List of dimension IDs").getIntList();
         isWhitelist = cfg.getBoolean("isWhiteList", CATEGORY_GENERAL, isWhitelist, "List of dimensions acts as a white list. So in these dimensions timer is stopped (false - to set to blacklist instead)");
         initialDimension = cfg.getInt("initialDimension", CATEGORY_GENERAL, initialDimension, -32767, 32768, "Dimension where to return player in if timer ran out");
         initialTime = cfg.getInt("initialTime", CATEGORY_GENERAL, initialTime, 0, 7128000, "Initial time that is given to new players");
         keepInventoryOnDeathInForeignDimensions = cfg.getBoolean("keepInventoryOnDeathInForeignDimensions", CATEGORY_GENERAL, keepInventoryOnDeathInForeignDimensions, "Should inventory be kept for players who died in \"not safe\" dimension?");
         hardcoreTimeLimit = cfg.getBoolean("hardcoreTimeLimit", CATEGORY_GENERAL, hardcoreTimeLimit, "Should player be killed when time ran out. Inventory will not be kept!");
+        hudVisible = cfg.getBoolean("hudVisible", CATEGORY_GENERAL, hudVisible, "Should Time HUD be displayed always or just when in foreign dimension? true = always.");
         cfg.setCategoryPropertyOrder(CATEGORY_GENERAL, order);
     }
 

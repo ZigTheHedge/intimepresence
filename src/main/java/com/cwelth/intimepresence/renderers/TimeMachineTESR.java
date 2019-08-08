@@ -1,9 +1,9 @@
 package com.cwelth.intimepresence.renderers;
 
 import com.cwelth.intimepresence.blocks.AllBlocks;
-import com.cwelth.intimepresence.blocks.Pump;
+import com.cwelth.intimepresence.blocks.CommonBlock;
 import com.cwelth.intimepresence.blocks.TimeMachine;
-import com.cwelth.intimepresence.tileentities.PumpTE;
+import com.cwelth.intimepresence.items.AllItems;
 import com.cwelth.intimepresence.tileentities.TimeMachineTE;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,9 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -79,12 +81,20 @@ public class TimeMachineTESR extends TileEntitySpecialRenderer {
 
     void renderTimeBattery(TimeMachineTE te, float partialTicks)
     {
-        if(te.caseSlot.isEmpty())return;
+        if(!te.isTimeBatteryPresent)return;
 
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableLighting();
+
+
+        if(te.getWorld().getBlockState(te.getPos()).getValue(CommonBlock.FACING) == EnumFacing.EAST ||
+                te.getWorld().getBlockState(te.getPos()).getValue(CommonBlock.FACING) == EnumFacing.WEST) {
+            GlStateManager.translate(0, 0, 1F);
+            GlStateManager.rotate(90F, 0, 1,0);
+        }
+
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(.5F, 1.1F, .5F);
@@ -97,7 +107,10 @@ public class TimeMachineTESR extends TileEntitySpecialRenderer {
         else
             GlStateManager.translate(0, delta, 0);
 
-        Minecraft.getMinecraft().getRenderItem().renderItem(te.caseSlot, ItemCameraTransforms.TransformType.GROUND);
+
+
+
+        Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(AllItems.timeBattery), ItemCameraTransforms.TransformType.GROUND);
         GlStateManager.popMatrix();
 
         GlStateManager.disableLighting();

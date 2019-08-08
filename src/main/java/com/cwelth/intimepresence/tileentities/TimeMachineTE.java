@@ -1,14 +1,16 @@
 package com.cwelth.intimepresence.tileentities;
 
 import com.cwelth.intimepresence.ModMain;
+import com.cwelth.intimepresence.blocks.TimeMachine;
 import com.cwelth.intimepresence.items.AllItems;
-import com.cwelth.intimepresence.items.TimeBattery;
 import com.cwelth.intimepresence.network.SyncTESRAnim;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class TimeMachineTE extends CommonTE implements ITickable {
@@ -18,6 +20,8 @@ public class TimeMachineTE extends CommonTE implements ITickable {
     public ItemStack caseSlot = ItemStack.EMPTY;
     public boolean isOffline = true;
     public BlockPos attachedTE = null;
+    public boolean isTimeBatteryPresent = false;
+    public int tickDelay = 2;
 
     public TimeMachineTE() {
         super(0);
@@ -27,6 +31,15 @@ public class TimeMachineTE extends CommonTE implements ITickable {
     public void update() {
         if(!world.isRemote)
         {
+            if(tickDelay > 0)
+            {
+                tickDelay--;
+                if(tickDelay == 0)
+                {
+                    tickDelay = 2;
+                } else
+                    return;
+            }
             if(isPowered)
             {
                 if(caseLevel < 34) {
@@ -38,6 +51,7 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                     isOffline = true;
                     markDirty();
                     sendUpdates();
+                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 }
             } else
             {
@@ -50,24 +64,38 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                     if(attachedTE != null && !caseSlot.isEmpty() && caseSlot.getItem() == AllItems.timeBattery)
                     {
                         ShardProcessorTE ate = (ShardProcessorTE)world.getTileEntity(attachedTE);
-                        if(ate != null && ate.timeStored >= 10) {
-                            NBTTagCompound nbt = caseSlot.getTagCompound();
-                            nbt.setInteger("charge", nbt.getInteger("charge") + 10);
-                            ate.timeStored -= 10;
-                            ate.markDirty();
-                            ate.sendUpdates();
-                            //ate.getWorld().notifyBlockUpdate(attachedTE, world.getBlockState(attachedTE), world.getBlockState(attachedTE), 3);
-                            if(isOffline) {
-                                isOffline = false;
-                                markDirty();
-                                world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
+                        if(ate != null)
+                        {
+                            if(ate.timeStored > 0) {
+                                int timeToShare = 10;
+                                if (ate.timeStored < timeToShare) timeToShare = ate.timeStored;
+                                NBTTagCompound nbt = caseSlot.getTagCompound();
+                                nbt.setInteger("charge", nbt.getInteger("charge") + timeToShare);
+                                ate.timeStored -= timeToShare;
+                                ate.markDirty();
+                                ate.sendUpdates();
+                                if (isOffline) {
+                                    isOffline = false;
+                                    markDirty();
+                                    sendUpdates();
+                                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                                }
+                            } else
+                            {
+                                if(!isOffline) {
+                                    isOffline = true;
+                                    markDirty();
+                                    sendUpdates();
+                                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                                }
                             }
                         } else
                         {
                             if(!isOffline) {
                                 isOffline = true;
                                 markDirty();
-                                world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
+                                sendUpdates();
+                                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                             }
                         }
                     } else
@@ -75,7 +103,8 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                         if(!isOffline) {
                             isOffline = true;
                             markDirty();
-                            world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
+                            sendUpdates();
+                            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                         }
                     }
                 }
@@ -87,12 +116,13 @@ public class TimeMachineTE extends CommonTE implements ITickable {
     public void updateTEFromPacket(int[] params) {
         caseLevel = params[0];
         isPowered = (params[1] == 1);
-        isOffline = (params[2] == 1);
+        //isOffline = (params[2] == 1);
+        isTimeBatteryPresent = (params[3] == 1);
     }
 
     public void sendUpdates()
     {
-        ModMain.network.sendToAllAround(new SyncTESRAnim(this, caseLevel, (isPowered)?1:0, (isOffline)?1:0),
+        ModMain.network.sendToAllAround(new SyncTESRAnim(this, caseLevel, (isPowered)?1:0, (isOffline)?1:0, (isTimeBatteryPresent)?1:0),
                 new NetworkRegistry.TargetPoint(world.provider.getDimension(),
                         (double)getPos().getX(),
                         (double)getPos().getY(),
@@ -103,30 +133,28 @@ public class TimeMachineTE extends CommonTE implements ITickable {
 
     public void setActive(boolean isActive)
     {
-        isPowered = isActive;
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-        markDirty();
+        if(!world.isRemote) {
+            isPowered = isActive;
+            markDirty();
+            sendUpdates();
+        }
     }
 
     public ItemStack useItem(ItemStack is)
     {
         if(caseSlot.isEmpty()) {
             caseSlot = is.copy();
+            isTimeBatteryPresent = true;
             setActive(isPowered);
             return ItemStack.EMPTY;
         } else
         {
             ItemStack ret = caseSlot.copy();
             caseSlot = ItemStack.EMPTY;
+            isTimeBatteryPresent = false;
             setActive(isPowered);
             return ret;
         }
-    }
-
-    public void setOffline(boolean isOffline)
-    {
-        this.isOffline = isOffline;
-        setActive(isPowered);
     }
 
     @Override
@@ -138,6 +166,7 @@ public class TimeMachineTE extends CommonTE implements ITickable {
         if(compound.hasKey("isOffline")) isOffline = compound.getBoolean("isOffline");
         if(compound.hasKey("attachedTE")) attachedTE = NBTUtil.getPosFromTag((NBTTagCompound)compound.getTag("attachedTE"));
         else attachedTE = null;
+        if(compound.hasKey("isTimeBatteryPresent")) isTimeBatteryPresent = compound.getBoolean("isTimeBatteryPresent");
     }
 
     @Override
@@ -148,6 +177,12 @@ public class TimeMachineTE extends CommonTE implements ITickable {
         compound.setTag("caseSlot", caseSlot.serializeNBT());
         compound.setBoolean("isOffline", isOffline);
         if(attachedTE != null)compound.setTag("attachedTE", NBTUtil.createPosTag(attachedTE));
+        compound.setBoolean("isTimeBatteryPresent", isTimeBatteryPresent);
         return compound;
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }

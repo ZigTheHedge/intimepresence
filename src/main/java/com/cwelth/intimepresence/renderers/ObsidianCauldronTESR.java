@@ -32,8 +32,9 @@ public class ObsidianCauldronTESR extends TileEntitySpecialRenderer {
         GlStateManager.translate(x, y, z);
         GlStateManager.disableRescaleNormal();
 
-        if(te.getLiquidAmount() > 0 && te.isLavaUnderneath())
+        if(te.getLiquidAmount() > 0 && te.isLavaUnderneath()){
             renderLiquid(te);
+        }
         renderRecipe(te.itemStackHandler);
 
         GlStateManager.popMatrix();

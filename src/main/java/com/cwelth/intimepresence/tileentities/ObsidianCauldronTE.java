@@ -1,19 +1,19 @@
 package com.cwelth.intimepresence.tileentities;
 
+import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.SidedItemHandler;
+import com.cwelth.intimepresence.network.SyncObsidianCauldron;
+import com.cwelth.intimepresence.network.SyncTESRAnim;
 import com.cwelth.intimepresence.recipies.ObsidianCauldronRecipe;
-import com.cwelth.intimepresence.recipies.ObsidianCauldronRecipes;
 import com.cwelth.intimepresence.recipies.SelfRecipies;
-import javafx.geometry.Side;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -27,8 +27,11 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
     public ItemStackHandler outputHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-            ObsidianCauldronTE.this.markDirty();
+            if(!world.isRemote) {
+                ObsidianCauldronTE.this.markDirty();
+                ModMain.network.sendToAllAround(new SyncObsidianCauldron(ObsidianCauldronTE.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        pos.getX(), pos.getY(), pos.getZ(), 64D));
+            }
         }
     };
 
@@ -75,7 +78,6 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound = super.writeToNBT(compound);
-        recalculateLiquidAmount();
         compound.setInteger("workCycle", workCycle);
         compound.setInteger("workCycleTotal", workCycleTotal);
         compound.setTag("inputHandler", itemStackHandler.serializeNBT());
@@ -122,7 +124,9 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
                 }
                 recipeResult = foundRecipe.out.copy();
                 workCycleTotal = workCycle = foundRecipe.workCycles;
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                ModMain.network.sendToAllAround(new SyncObsidianCauldron(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        pos.getX(), pos.getY(), pos.getZ(), 64D));
+
                 ObsidianCauldronTE.this.markDirty();
             }
         }
@@ -148,19 +152,36 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
                         }
                     }
                 }
+                sendUpdates();
             }
         } else {
             if(!world.isRemote)checkValidRecipe();
         }
     }
 
+    @Override
+    public void updateTEFromPacket(int[] params) {
+        workCycle = params[0];
+        workCycleTotal = params[1];
+    }
+
+    public void sendUpdates()
+    {
+        if(isGUIopened)
+            ModMain.network.sendToAllAround(new SyncTESRAnim(this, workCycle, workCycleTotal),
+                new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        (double)getPos().getX(),
+                        (double)getPos().getY(),
+                        (double)getPos().getZ(),
+                        16D
+                ));
+    }
 
     @Override
     public boolean prepareGUIToBeOpened(boolean shouldOpen) {
         if(shouldOpen) {
             if(isGUIopened) return false;
             isGUIopened = true;
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             return true;
         } else {
             isGUIopened = false;
@@ -171,6 +192,7 @@ public class ObsidianCauldronTE extends CommonTE implements ITickable, ICapabili
     public int getLiquidAmount()
     {
 
+        recalculateLiquidAmount();
         return liquidAmount;
     }
 }

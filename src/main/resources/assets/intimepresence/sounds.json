@@ -1,4 +1,0 @@
-{
-  "endgamemusic": { "category": "music", "sounds": ["bioimmunity:endgamesound"], "stream": true },
-  "blow": { "category": "neutral", "sounds": ["bioimmunity:blow"]}
-}

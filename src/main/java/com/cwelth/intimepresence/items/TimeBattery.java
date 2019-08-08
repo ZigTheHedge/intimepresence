@@ -46,11 +46,22 @@ public class TimeBattery extends Item {
 
         NBTTagCompound nbt = stack.getTagCompound();
         if(!nbt.hasKey("ischarging"))nbt.setBoolean("ischarging", true);
+        if(!nbt.hasKey("isWholeMode"))nbt.setBoolean("isWholeMode", false);
         if(!nbt.hasKey("charge"))nbt.setInteger("charge", 0);
         stack.setTagCompound(nbt);
 
-        if(nbt.getBoolean("ischarging")) tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.mode") + TextFormatting.DARK_AQUA + I18n.format("timebattery.mode.charge"));
-        else tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.mode") + TextFormatting.GOLD + I18n.format("timebattery.mode.discharge"));
+        if(nbt.getBoolean("ischarging")) {
+            if(nbt.getBoolean("isWholeMode"))
+                tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.mode") + TextFormatting.DARK_AQUA + I18n.format("timebattery.mode.chargewhole"));
+            else
+                tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.mode") + TextFormatting.DARK_AQUA + I18n.format("timebattery.mode.charge"));
+        }
+        else {
+            if(nbt.getBoolean("isWholeMode"))
+                tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.mode") + TextFormatting.GOLD + I18n.format("timebattery.mode.dischargewhole"));
+            else
+                tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.mode") + TextFormatting.GOLD + I18n.format("timebattery.mode.discharge"));
+        }
         tooltip.add(TextFormatting.GRAY + I18n.format("timebattery.chargelevel", nbt.getInteger("charge")));
     }
 
@@ -72,26 +83,54 @@ public class TimeBattery extends Item {
 
             NBTTagCompound nbt = stack.getTagCompound();
             if(!nbt.hasKey("ischarging"))nbt.setBoolean("ischarging", true);
+            if(!nbt.hasKey("isWholeMode"))nbt.setBoolean("isWholeMode", false);
             if(!nbt.hasKey("charge"))nbt.setInteger("charge", 0);
             if(entityPlayer.isSneaking())
             {
-                nbt.setBoolean("ischarging", !nbt.getBoolean("ischarging"));
+                if(!nbt.getBoolean("isWholeMode"))
+                    nbt.setBoolean("isWholeMode", true);
+                else {
+                    nbt.setBoolean("isWholeMode", false);
+                    if(!nbt.getBoolean("ischarging")) {
+                        nbt.setBoolean("ischarging", true);
+                    } else {
+                        nbt.setBoolean("ischarging", false);
+                    }
+                }
             } else
             {
                 IGhostPlayer player = entityPlayer.getCapability(GhostPlayerProvider.GHOST_PLAYER_CAPABILITY, null);
                 if(nbt.getBoolean("ischarging"))
                 {
-                    if(player.getPresenceTime() >= 400) {
-                        nbt.setInteger("charge", nbt.getInteger("charge") + 400);
-                        player.setPresenceTime(player.getPresenceTime() - 400);
-                        ModMain.network.sendTo(new SyncAllCaps(player.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                    if(!nbt.getBoolean("isWholeMode")) {
+                        if (player.getPresenceTime() >= 400) {
+                            nbt.setInteger("charge", nbt.getInteger("charge") + 400);
+                            player.setPresenceTime(player.getPresenceTime() - 400);
+                            ModMain.network.sendTo(new SyncAllCaps(player.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                        }
+                    } else
+                    {
+                        if (player.getPresenceTime() > 0) {
+                            nbt.setInteger("charge", nbt.getInteger("charge") + player.getPresenceTime());
+                            player.setPresenceTime(0);
+                            ModMain.network.sendTo(new SyncAllCaps(player.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                        }
                     }
                 } else
                 {
-                    if(nbt.getInteger("charge") >= 400) {
-                        nbt.setInteger("charge",  nbt.getInteger("charge") - 400);
-                        player.setPresenceTime(player.getPresenceTime() + 400);
-                        ModMain.network.sendTo(new SyncAllCaps(player.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                    if(!nbt.getBoolean("isWholeMode")) {
+                        if (nbt.getInteger("charge") >= 400) {
+                            nbt.setInteger("charge", nbt.getInteger("charge") - 400);
+                            player.setPresenceTime(player.getPresenceTime() + 400);
+                            ModMain.network.sendTo(new SyncAllCaps(player.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                        }
+                    } else
+                    {
+                        if (nbt.getInteger("charge") > 0) {
+                            player.setPresenceTime(player.getPresenceTime() + nbt.getInteger("charge"));
+                            nbt.setInteger("charge", 0);
+                            ModMain.network.sendTo(new SyncAllCaps(player.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                        }
                     }
                 }
             }

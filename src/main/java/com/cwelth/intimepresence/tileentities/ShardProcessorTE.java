@@ -3,6 +3,7 @@ package com.cwelth.intimepresence.tileentities;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.ShardProcessorItemHandler;
 import com.cwelth.intimepresence.items.AllItems;
+import com.cwelth.intimepresence.network.SyncShardProcessor;
 import com.cwelth.intimepresence.network.SyncTESRAnim;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,10 +12,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -34,8 +33,11 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-            ShardProcessorTE.this.markDirty();
+            if(!world.isRemote) {
+                ModMain.network.sendToAllAround(new SyncShardProcessor(ShardProcessorTE.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        pos.getX(), pos.getY(), pos.getZ(), 64D));
+                ShardProcessorTE.this.markDirty();
+            }
         }
     };
 
@@ -43,9 +45,11 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            if(isGUIopened)
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-            ShardProcessorTE.this.markDirty();
+            if(!world.isRemote) {
+                ModMain.network.sendToAllAround(new SyncShardProcessor(ShardProcessorTE.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                        pos.getX(), pos.getY(), pos.getZ(), 64D));
+                ShardProcessorTE.this.markDirty();
+            }
         }
     };
 
@@ -67,6 +71,8 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                         if(!enderPearlSlot.getStackInSlot(0).isEmpty() && enderPearlSlot.getStackInSlot(0).getItem() == Items.ENDER_PEARL || shardTime > 0) {
                             if ((burnTime = burnTimeInitial = TileEntityFurnace.getItemBurnTime(itemStackHandler.getStackInSlot(0))) > 0) {
                                 itemStackHandler.getStackInSlot(0).shrink(1);
+                                ModMain.network.sendToAllAround(new SyncShardProcessor(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                                        pos.getX(), pos.getY(), pos.getZ(), 64D));
                             }
                         }
                     }
@@ -79,11 +85,12 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                     {
                         pearlTime = 1000;
                         enderPearlSlot.getStackInSlot(0).shrink(1);
+                        ModMain.network.sendToAllAround(new SyncShardProcessor(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                                pos.getX(), pos.getY(), pos.getZ(), 64D));
                     }
                 }
                 markDirty();
                 sendUpdates();
-                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             }
             if(pearlTime > 0 && burnTime > 0)
             {
@@ -93,11 +100,12 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                     {
                         shardTime = 600;
                         dimshardsSlot.getStackInSlot(0).shrink(1);
+                        ModMain.network.sendToAllAround(new SyncShardProcessor(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                                pos.getX(), pos.getY(), pos.getZ(), 64D));
                     }
                 }
                 markDirty();
                 sendUpdates();
-                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             }
             if(shardTime > 0 && pearlTime > 0 && burnTime > 0)
             {
@@ -105,7 +113,6 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                 timeStored++;
                 markDirty();
                 sendUpdates();
-                //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             }
         }
     }
@@ -165,7 +172,6 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
         if(shouldOpen) {
             if(isGUIopened) return false;
             isGUIopened = true;
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             return true;
         } else {
             isGUIopened = false;

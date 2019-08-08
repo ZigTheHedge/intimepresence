@@ -1,5 +1,6 @@
 package com.cwelth.intimepresence.proxy;
 
+import com.cwelth.intimepresence.KeyBindings;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.blocks.AllBlocks;
 import com.cwelth.intimepresence.items.AllItems;
@@ -34,7 +35,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(FMLInitializationEvent e) {
-
+        KeyBindings.init();
         super.init(e);
     }
 }

@@ -1,6 +1,8 @@
 package com.cwelth.intimepresence.tileentities;
 
+import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.fluids.AllFluids;
+import com.cwelth.intimepresence.network.SyncTESRAnim;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
@@ -35,7 +38,7 @@ public class PumpTE extends CommonTE implements ITickable, ICapabilityProvider {
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();
-                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                PumpTE.this.sendUpdates();
                 PumpTE.this.markDirty();
             }
         };
@@ -43,6 +46,7 @@ public class PumpTE extends CommonTE implements ITickable, ICapabilityProvider {
 
     @Override
     public void update() {
+        if(world.isRemote)return;
         if(workCycle > 0 && isPowered) {
             workCycle--;
             if(workCycle == 0)
@@ -119,13 +123,36 @@ public class PumpTE extends CommonTE implements ITickable, ICapabilityProvider {
         }
     }
 
+    @Override
+    public void updateTEFromPacket(int[] params) {
+        workCycle = params[0];
+        if(params[1] > 0) {
+            FluidStack fluidStack = new FluidStack(FluidRegistry.getFluid("water"), params[1]);
+            waterTank.setFluid(fluidStack);
+        } else
+            waterTank.setFluid(null);
+        isPowered = (params[2] == 1);
+    }
+
+    public void sendUpdates()
+    {
+        ModMain.network.sendToAllAround(new SyncTESRAnim(this, workCycle, waterTank.getFluidAmount(), isPowered?1:0),
+                    new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                            (double)getPos().getX(),
+                            (double)getPos().getY(),
+                            (double)getPos().getZ(),
+                            64D
+                    ));
+    }
+
     public void setActive(boolean isActive)
     {
         isPowered = isActive;
         if(isPowered)
             workCycle = 20;
-        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+        //world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
         markDirty();
+        sendUpdates();
     }
 
     @Override

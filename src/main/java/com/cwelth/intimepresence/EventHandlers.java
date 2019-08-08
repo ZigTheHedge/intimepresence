@@ -2,6 +2,7 @@ package com.cwelth.intimepresence;
 
 
 import com.cwelth.intimepresence.items.AllItems;
+import com.cwelth.intimepresence.proxy.CommonProxy;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.RandomValueRange;
@@ -10,8 +11,15 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.LootingEnchantBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
+
+@Mod.EventBusSubscriber
 public class EventHandlers {
 
     @SubscribeEvent
@@ -28,5 +36,14 @@ public class EventHandlers {
         }
     }
 
-
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onKeyPress(InputEvent.KeyInputEvent e)
+    {
+        if(KeyBindings.hudSwitch.isPressed()) {
+            Config.hudVisible = !Config.hudVisible;
+            CommonProxy.config.getCategory(CATEGORY_GENERAL).get("hudVisible").set(Config.hudVisible);
+            CommonProxy.config.save();
+        }
+    }
 }

@@ -34,8 +34,10 @@ obsidiancauldron.nolava=Отсутствует лава под блоком!
 shardprocessor.notm=Присоедините Машину Времени
 
 timebattery.mode=Режим:
-timebattery.mode.charge=Хранить Время
-timebattery.mode.discharge=Отдавать Время
+timebattery.mode.charge=Хранить Время (20с)
+timebattery.mode.discharge=Отдавать Время (20с)
+timebattery.mode.chargewhole=Хранить Время (Все)
+timebattery.mode.dischargewhole=Отдавать Время (Все)
 timebattery.chargelevel=Времени накоплено: %d
 
 bioniceye.tooltip=Позволяет видеть оставшееся Время. Правый клик чтобы надеть.
@@ -43,3 +45,8 @@ bioniceye.alreadyinstalled=Бионический глаз уже установ
 
 dimshards.tooltip=Само Время содержится в этих осколках.
 
+
+ranoutoftimehardcore=Your time has run out
+
+key.hudswitch=Включить/выключить HUD
+key.intimepresence=In Time Presence

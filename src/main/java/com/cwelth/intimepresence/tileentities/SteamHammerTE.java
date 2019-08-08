@@ -53,16 +53,20 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();
-                SteamHammerTE.this.markDirty();
-                markedForUpdate = true;
+                if(!world.isRemote) {
+                    SteamHammerTE.this.markDirty();
+                    markedForUpdate = true;
+                }
             }
         };
         steamTank = new FluidTank(10000) {
             @Override
             protected void onContentsChanged() {
                 super.onContentsChanged();
-                SteamHammerTE.this.markDirty();
-                markedForUpdate = true;
+                if(!world.isRemote) {
+                    SteamHammerTE.this.markDirty();
+                    markedForUpdate = true;
+                }
             }
         };
 
@@ -132,6 +136,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
     public void update() {
         if(!world.isRemote)
         {
+
             if(markedForUpdate)
             {
                 tickDelay--;
@@ -143,6 +148,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
                         world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
                 }
             }
+
             if(!bucketHandler.getStackInSlot(0).isEmpty())
             {
                 if(bucketHandler.getStackInSlot(0).hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))

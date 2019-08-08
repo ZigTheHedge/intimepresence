@@ -35,8 +35,10 @@ shardprocessor.notm=No Time Machine attached!
 ranoutoftimehardcore=Your time has run out
 
 timebattery.mode=Mode: 
-timebattery.mode.charge=Store Time
-timebattery.mode.discharge=Give Time
+timebattery.mode.charge=Store Time (20s)
+timebattery.mode.discharge=Give Time (20s)
+timebattery.mode.chargewhole=Store Time (All)
+timebattery.mode.dischargewhole=Give Time (All)
 timebattery.chargelevel=Time Stored: %d
 
 bioniceye.tooltip=Allows you to see remaining time. Right-click to put on.
@@ -44,3 +46,5 @@ bioniceye.alreadyinstalled=Bionic Eye is already installed. No need for another 
 
 dimshards.tooltip=Precious time itself is stored within these shards.
 
+key.hudswitch=Switch HUD on/off
+key.intimepresence=In Time Presence
