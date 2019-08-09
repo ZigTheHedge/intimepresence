@@ -43,6 +43,7 @@ timebattery.chargelevel=Time Stored: %d
 
 bioniceye.tooltip=Allows you to see remaining time. Right-click to put on.
 bioniceye.alreadyinstalled=Bionic Eye is already installed. No need for another one.
+bioniceye.hudhidden=Bionic Eye is installed, although HUD is hidden. Use %s key to unhide.
 
 dimshards.tooltip=Precious time itself is stored within these shards.
 

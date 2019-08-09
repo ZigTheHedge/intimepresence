@@ -42,6 +42,8 @@ timebattery.chargelevel=Времени накоплено: %d
 
 bioniceye.tooltip=Позволяет видеть оставшееся Время. Правый клик чтобы надеть.
 bioniceye.alreadyinstalled=Бионический глаз уже установлен. Еще один не требуется.
+bioniceye.hudhidden=Бионический глаз установлен, однако HUD скрыт. Нажмите %s, чтобы показать HUD.
+
 
 dimshards.tooltip=Само Время содержится в этих осколках.
 

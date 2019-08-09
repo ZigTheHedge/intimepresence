@@ -1,5 +1,7 @@
 package com.cwelth.intimepresence.items;
 
+import com.cwelth.intimepresence.Config;
+import com.cwelth.intimepresence.KeyBindings;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.network.SyncAllCaps;
 import com.cwelth.intimepresence.player.GhostPlayerProvider;
@@ -58,6 +60,8 @@ public class BionicEye extends Item {
             if (!worldIn.isRemote) {
                 ghostPlayer.setHudInstalled(true);
                 ModMain.network.sendTo(new SyncAllCaps(ghostPlayer.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+                if(!Config.hudVisible)
+                    entityPlayer.sendMessage(new TextComponentString(I18n.format("bioniceye.hudhidden", KeyBindings.hudSwitch.getDisplayName())));
             }
             stack.shrink(1);
             return new ActionResult(EnumActionResult.SUCCESS, stack);
