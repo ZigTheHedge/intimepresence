@@ -121,7 +121,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
             return false;
         if(SelfRecipies.steamHammerRecepies.isItemValid(itemStackHandler.getStackInSlot(0)) && steamTank.getFluidAmount() >= SelfRecipies.steamHammerRecepies.getWorkCycles(itemStackHandler.getStackInSlot(0)) * 100)
         {
-            if(outputHandler.getStackInSlot(0).isEmpty() || (outputHandler.getStackInSlot(0).getItem() == SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0)).getItem() && outputHandler.getStackInSlot(0).getCount() + SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0)).getCount() <= outputHandler.getStackInSlot(0).getMaxStackSize())) {
+            if(outputHandler.getStackInSlot(0).isEmpty() || (outputHandler.getStackInSlot(0).isItemEqual(SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0))) && outputHandler.getStackInSlot(0).getCount() + SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0)).getCount() <= outputHandler.getStackInSlot(0).getMaxStackSize())) {
                 workCountdown = SelfRecipies.steamHammerRecepies.getWorkCycles(itemStackHandler.getStackInSlot(0));
                 recipeResult = SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0)).copy();
                 itemStackHandler.getStackInSlot(0).shrink(1);
