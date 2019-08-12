@@ -60,6 +60,8 @@ public class BionicEye extends Item {
             if (!worldIn.isRemote) {
                 ghostPlayer.setHudInstalled(true);
                 ModMain.network.sendTo(new SyncAllCaps(ghostPlayer.writeToNBT(), entityPlayer.getEntityId()), (EntityPlayerMP) entityPlayer);
+            } else
+            {
                 if(!Config.hudVisible)
                     entityPlayer.sendMessage(new TextComponentString(I18n.format("bioniceye.hudhidden", KeyBindings.hudSwitch.getDisplayName())));
             }

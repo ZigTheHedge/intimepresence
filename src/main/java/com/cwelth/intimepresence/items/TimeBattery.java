@@ -40,6 +40,19 @@ public class TimeBattery extends Item {
     }
 
     @Override
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+        super.onCreated(stack, worldIn, playerIn);
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(new NBTTagCompound());
+
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(!nbt.hasKey("ischarging"))nbt.setBoolean("ischarging", true);
+        if(!nbt.hasKey("isWholeMode"))nbt.setBoolean("isWholeMode", false);
+        if(!nbt.hasKey("charge"))nbt.setInteger("charge", 0);
+        stack.setTagCompound(nbt);
+    }
+
+    @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());

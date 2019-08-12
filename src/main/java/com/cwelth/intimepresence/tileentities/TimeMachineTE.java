@@ -70,15 +70,19 @@ public class TimeMachineTE extends CommonTE implements ITickable {
                                 int timeToShare = 10;
                                 if (ate.timeStored < timeToShare) timeToShare = ate.timeStored;
                                 NBTTagCompound nbt = caseSlot.getTagCompound();
-                                nbt.setInteger("charge", nbt.getInteger("charge") + timeToShare);
-                                ate.timeStored -= timeToShare;
-                                ate.markDirty();
-                                ate.sendUpdates();
-                                if (isOffline) {
-                                    isOffline = false;
-                                    markDirty();
-                                    sendUpdates();
-                                    world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                                if(nbt != null) {
+                                    nbt.setInteger("charge", nbt.getInteger("charge") + timeToShare);
+                                    ate.timeStored -= timeToShare;
+                                    ate.markDirty();
+                                    ate.sendUpdates();
+                                    if (isOffline) {
+                                        isOffline = false;
+                                        markDirty();
+                                        sendUpdates();
+                                        world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+                                    }
+                                } else {
+                                    ModMain.logger.warning("Something weird: " + caseSlot.toString());
                                 }
                             } else
                             {
@@ -146,6 +150,7 @@ public class TimeMachineTE extends CommonTE implements ITickable {
             caseSlot = is.copy();
             isTimeBatteryPresent = true;
             setActive(isPowered);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             return ItemStack.EMPTY;
         } else
         {
@@ -153,6 +158,7 @@ public class TimeMachineTE extends CommonTE implements ITickable {
             caseSlot = ItemStack.EMPTY;
             isTimeBatteryPresent = false;
             setActive(isPowered);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
             return ret;
         }
     }
