@@ -27,6 +27,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
     public int delta = -1;
     public int currentPistonPosition = 50;
     public int workCountdown = 0;
+    public int workCountdownInitial = 0;
     public int temperature = 0;
     public int burnTime = 0;
     public int initialBurnTime = 0;
@@ -122,7 +123,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         if(SelfRecipies.steamHammerRecepies.isItemValid(itemStackHandler.getStackInSlot(0)) && steamTank.getFluidAmount() >= SelfRecipies.steamHammerRecepies.getWorkCycles(itemStackHandler.getStackInSlot(0)) * 100)
         {
             if(outputHandler.getStackInSlot(0).isEmpty() || (outputHandler.getStackInSlot(0).isItemEqual(SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0))) && outputHandler.getStackInSlot(0).getCount() + SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0)).getCount() <= outputHandler.getStackInSlot(0).getMaxStackSize())) {
-                workCountdown = SelfRecipies.steamHammerRecepies.getWorkCycles(itemStackHandler.getStackInSlot(0));
+                workCountdownInitial = workCountdown = SelfRecipies.steamHammerRecepies.getWorkCycles(itemStackHandler.getStackInSlot(0));
                 recipeResult = SelfRecipies.steamHammerRecepies.getOutput(itemStackHandler.getStackInSlot(0)).copy();
                 itemStackHandler.getStackInSlot(0).shrink(1);
                 return true;
@@ -276,6 +277,8 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
             delta = compound.getInteger("delta");
         if(compound.hasKey("workCountdown"))
             workCountdown = compound.getInteger("workCountdown");
+        if(compound.hasKey("workCountdownInitial"))
+            workCountdownInitial = compound.getInteger("workCountdownInitial");
         if(compound.hasKey("currentPistonPosition"))
             currentPistonPosition = compound.getInteger("currentPistonPosition");
         if(compound.hasKey("temperature"))
@@ -303,6 +306,7 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
         compound = super.writeToNBT(compound);
         compound.setInteger("delta", delta);
         compound.setInteger("workCountdown", workCountdown);
+        compound.setInteger("workCountdownInitial", workCountdownInitial);
         compound.setInteger("currentPistonPosition", currentPistonPosition);
         compound.setInteger("temperature", temperature);
         compound.setInteger("burnTime", burnTime);

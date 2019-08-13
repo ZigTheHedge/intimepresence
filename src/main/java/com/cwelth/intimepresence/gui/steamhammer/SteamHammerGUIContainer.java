@@ -67,6 +67,7 @@ public class SteamHammerGUIContainer<TE extends CommonTE, CNT extends CommonCont
 
         drawBurnTime(te.burnTime, te.initialBurnTime);
         drawTemperature(te.temperature);
+        drawProgress();
     }
 
     protected void drawBurnTime(int burnTime, int maxTime)
@@ -142,6 +143,23 @@ public class SteamHammerGUIContainer<TE extends CommonTE, CNT extends CommonCont
         GlStateManager.disableBlend();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
+
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
+    }
+
+
+    public void drawProgress()
+    {
+        if(te.workCountdownInitial == 0 || te.workCountdown == 0)return;
+        mc.getTextureManager().bindTexture(tempBar);
+        int posX = te.workCountdown * 55 / te.workCountdownInitial;
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        drawTexturedModalRect(guiLeft + 57, guiTop + 42, 0, 114, 55 - posX, 11);
 
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
