@@ -35,7 +35,7 @@ public class ShardProcessor extends CommonTEBlock<ShardProcessorTE> {
     public ShardProcessor() {
         super(Material.IRON, "shardprocessor");
         setCreativeTab(ModMain.itpCreativeTab);
-        setHardness(.5F);
+        setHardness(5F);
         setHarvestLevel("pickaxe", 2);
 
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

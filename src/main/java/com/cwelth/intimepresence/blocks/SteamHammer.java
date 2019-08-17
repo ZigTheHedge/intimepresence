@@ -52,7 +52,7 @@ public class SteamHammer extends CommonTEBlock<SteamHammerTE> {
 
     public SteamHammer() {
         super(Material.IRON, "steamhammer");
-        setHardness(.5F);
+        setHardness(5F);
         setHarvestLevel("pickaxe", 2);
 
         setCreativeTab(ModMain.itpCreativeTab);

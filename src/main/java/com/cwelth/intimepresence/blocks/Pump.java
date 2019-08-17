@@ -43,7 +43,7 @@ public class Pump extends CommonTEBlock <PumpTE> {
         setCreativeTab(ModMain.itpCreativeTab);
         setHarvestLevel("pickaxe", 2);
 
-        setHardness(.5F);
+        setHardness(5F);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(IS_SCREW, false));
     }
 

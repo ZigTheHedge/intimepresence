@@ -44,7 +44,7 @@ public class TimeMachine extends CommonTEBlock<TimeMachineTE> {
     public TimeMachine() {
         super(Material.IRON, "timemachine");
         setCreativeTab(ModMain.itpCreativeTab);
-        setHardness(.5F);
+        setHardness(5F);
         setHarvestLevel("pickaxe", 2);
 
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(IS_CASE_RAISED, false).withProperty(IS_OFFLINE, true));

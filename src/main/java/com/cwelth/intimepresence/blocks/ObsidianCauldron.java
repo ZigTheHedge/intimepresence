@@ -43,7 +43,7 @@ public class ObsidianCauldron extends CommonTEBlock<ObsidianCauldronTE> {
     public ObsidianCauldron() {
         super(Material.IRON, "obsidiancauldron");
         setCreativeTab(ModMain.itpCreativeTab);
-        setHardness(.5F);
+        setHardness(5F);
         setHarvestLevel("pickaxe", 2);
         setLightLevel(0.5F);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
