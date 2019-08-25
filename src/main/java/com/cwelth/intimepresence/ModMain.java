@@ -31,7 +31,7 @@ public class ModMain {
 
     public static final String NAME = "In Time Presence";
     public static final String MODID = "intimepresence";
-    public static final String VERSION = "1.26";
+    public static final String VERSION = "1.27";
     public static final CreativeTabs itpCreativeTab = new ITPCreativeTab();
 
 

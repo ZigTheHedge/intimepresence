@@ -4,12 +4,15 @@ import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.blocks.ObsidianCauldron;
 import com.cwelth.intimepresence.network.SyncObsidianCauldron;
 import com.cwelth.intimepresence.network.SyncShardProcessor;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -48,6 +51,11 @@ public class CommonTE extends TileEntity {
     public void updateTEFromPacket(int[] params)
     {
 
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return !(oldState.getBlock() == newSate.getBlock());
     }
 
     public boolean prepareGUIToBeOpened(boolean shouldOpen)

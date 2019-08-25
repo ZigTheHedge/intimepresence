@@ -82,12 +82,12 @@ public class TimeMachineTESR extends TileEntitySpecialRenderer {
     void renderTimeBattery(TimeMachineTE te, float partialTicks)
     {
         if(!te.isTimeBatteryPresent)return;
+        if(te.getWorld().getBlockState(te.getPos()).getBlock() != AllBlocks.timeMachine)return;
 
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableLighting();
-
 
         if(te.getWorld().getBlockState(te.getPos()).getValue(CommonBlock.FACING) == EnumFacing.EAST ||
                 te.getWorld().getBlockState(te.getPos()).getValue(CommonBlock.FACING) == EnumFacing.WEST) {
