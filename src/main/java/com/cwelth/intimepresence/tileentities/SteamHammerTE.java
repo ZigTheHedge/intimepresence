@@ -186,7 +186,13 @@ public class SteamHammerTE extends CommonTE implements ITickable, ICapabilityPro
             {
                 if((initialBurnTime = burnTime = TileEntityFurnace.getItemBurnTime(fuelHandler.getStackInSlot(0))) > 0)
                 {
-                    fuelHandler.getStackInSlot(0).shrink(1);
+                    if(fuelHandler.getStackInSlot(0).getItem() == Items.LAVA_BUCKET) {
+                        fuelHandler.setStackInSlot(0, new ItemStack(Items.BUCKET));
+                    } else
+                    {
+                        fuelHandler.getStackInSlot(0).shrink(1);
+                    }
+
 
                 }
             }
