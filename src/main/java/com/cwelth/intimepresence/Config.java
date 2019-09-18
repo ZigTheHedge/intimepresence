@@ -47,6 +47,7 @@ public class Config {
     public static int dimXchance = 5;
     public static int dimXminY = 0;
     public static int dimXmaxY = 200;
+    public static String blockToReplace = "minecraft:stone";
 
     public static int spawnX = 0;
     public static int spawnY = 0;
@@ -125,8 +126,9 @@ public class Config {
         dim1minY = cfg.getInt("dim1minY", CATEGORY_WORLDGEN, dim1minY, 0, 255, "Minimum height");
         dim1maxY = cfg.getInt("dim1maxY", CATEGORY_WORLDGEN, dim1maxY, 0, 255, "Maximum height");
 
-        order.addAll(Arrays.asList("genOreInForeignDimensions", "dimXamount", "dimXchance", "dimXminY", "dimXmaxY"));
+        order.addAll(Arrays.asList("genOreInForeignDimensions", "blockToReplace", "dimXamount", "dimXchance", "dimXminY", "dimXmaxY"));
         genOreInForeignDimensions = cfg.getBoolean("genOreInForeignDimensions", CATEGORY_WORLDGEN, genOreInForeignDimensions, "Should Dimensional Ore try to generate in other dimensions");
+        blockToReplace = cfg.getString("blockToReplace", CATEGORY_WORLDGEN, blockToReplace, "Block to replace during generation");
         dimXamount = cfg.getInt("dimXamount", CATEGORY_WORLDGEN, dimXamount, 0, 10, "Vein size");
         dimXchance = cfg.getInt("dimXchance", CATEGORY_WORLDGEN, dimXchance, 0, 100, "Chance to spawn");
         dimXminY = cfg.getInt("dimXminY", CATEGORY_WORLDGEN, dimXminY, 0, 255, "Minimum height");

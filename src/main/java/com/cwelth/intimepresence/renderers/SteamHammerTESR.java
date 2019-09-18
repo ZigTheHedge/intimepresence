@@ -19,7 +19,10 @@ public class SteamHammerTESR extends TileEntitySpecialRenderer {
     public void render(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         SteamHammerTE te = (SteamHammerTE)tileEntity;
 
-        if(te.getWorld().getBlockState(te.getPos()).getValue(SteamHammer.HALF) == SteamHammer.BlockPart.UPPER)return;
+        if(!te.getWorld().isAirBlock(te.getPos())) {
+            if (te.getWorld().getBlockState(te.getPos()).getValue(SteamHammer.HALF) == SteamHammer.BlockPart.UPPER)
+                return;
+        }
 
         GlStateManager.pushAttrib();
         GlStateManager.pushMatrix();
