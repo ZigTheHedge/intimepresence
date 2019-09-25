@@ -49,7 +49,7 @@ public class OreGen implements IWorldGenerator {
                 for(int i = 0; i < Config.blockToReplace.length(); i++)
                     if(Config.blockToReplace.charAt(i) == ':')
                         colonsinstring++;
-                if(colonsinstring > 0)
+                if(colonsinstring > 1)
                 {
                     meta = Integer.parseInt(Config.blockToReplace.substring(Config.blockToReplace.lastIndexOf(':') + 1));
                     IBlockState biqState = biq.getStateFromMeta(meta);
