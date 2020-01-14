@@ -1,0 +1,51 @@
+item.intimepresence.timebattery.name=时间电池
+item.intimepresence.bioniceye.name=仿生眼
+item.intimepresence.dimshards.name=维度碎片
+item.intimepresence.ironplate.name=铁板
+item.intimepresence.goldenplate.name=金板
+item.intimepresence.coke.name=焦煤
+item.intimepresence.crudeironingot.name=生铁锭
+item.intimepresence.crudeironplate.name=生铁板
+item.intimepresence.boer.name=波尔泵
+item.intimepresence.piston.name=活塞
+item.intimepresence.reservoir.name=蓄水器
+item.intimepresence.diamondshards.name=钻石碎片
+
+
+tile.intimepresence.steamhammer.name=蒸汽锤
+tile.intimepresence.pump.name=水泵
+tile.intimepresence.steamfluidblock.name=蒸汽
+tile.intimepresence.obsidiancauldron.name=黑曜石坩埚
+tile.intimepresence.timemachine.name=时间机器
+tile.intimepresence.shardprocessor.name=碎片处理器
+tile.intimepresence.cokeblock.name=焦煤块
+tile.intimepresence.crudeironblock.name=生铁块
+tile.intimepresence.dimensionalore.gravel.name=维度矿石
+tile.intimepresence.dimensionalore.netherrack.name=维度矿石
+tile.intimepresence.dimensionalore.endstone.name=维度矿石
+
+fluid.steamfluid=蒸汽
+
+itemGroup.intimepresence=时机有限
+
+tank.empty=空
+temperature.name=温度
+obsidiancauldron.nolava=需要下方有岩浆!
+shardprocessor.notm=没有接触时间机器!
+ranoutoftimehardcore=时机已尽
+
+timebattery.mode=模式:
+timebattery.mode.charge=存储时间 (20s)
+timebattery.mode.discharge=释放时间 (20s)
+timebattery.mode.chargewhole=存储时间 (全部缓存)
+timebattery.mode.dischargewhole=施放时间 (全部缓存)
+timebattery.chargelevel=已存储的时间: %d
+
+bioniceye.tooltip=能够使你看到剩余的时间，右键来佩戴
+bioniceye.alreadyinstalled=仿生眼已安装，无需再次佩戴
+bioniceye.hudhidden=检测到已安装仿生眼，按 %s 键来显示HUD界面
+
+dimshards.tooltip=时间就存储在这些珍贵的碎片之中
+
+key.hudswitch=打开/关闭仿生眼HUD
+key.intimepresence=时机有限
