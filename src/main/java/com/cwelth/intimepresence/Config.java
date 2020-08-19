@@ -18,6 +18,10 @@ public class Config {
     public static boolean isWhitelist = true;
     public static int initialDimension = 0;
     public static boolean keepInventoryOnDeathInForeignDimensions = true;
+    public static boolean keepTimeOnDeath = false;
+    public static int shardTime = 600;
+    public static int pearlTime = 1000;
+    public static int shardTimeMultiplier = 1;
     public static boolean hardcoreTimeLimit = false;
     public static int initialTime = 0;
 
@@ -75,12 +79,16 @@ public class Config {
 
     private static void initGeneralConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_GENERAL, "General configuration");
-        List<String> order = new ArrayList(Arrays.asList( "dimensionsList", "isWhiteList", "initialDimension", "initialTime", "keepInventoryOnDeathInForeignDimensions", "hardcoreTimeLimit", "hudVisible"));
+        List<String> order = new ArrayList(Arrays.asList( "dimensionsList", "isWhiteList", "initialDimension", "initialTime", "keepInventoryOnDeathInForeignDimensions", "keepTimeOnDeath", "hardcoreTimeLimit", "hudVisible", "shardTime", "shardTimeMultiplier", "pearlTime"));
         dimensionsList = cfg.get(CATEGORY_GENERAL, "dimensionsList", dimensionsList, "List of dimension IDs").getIntList();
         isWhitelist = cfg.getBoolean("isWhiteList", CATEGORY_GENERAL, isWhitelist, "List of dimensions acts as a white list. So in these dimensions timer is stopped (false - to set to blacklist instead)");
         initialDimension = cfg.getInt("initialDimension", CATEGORY_GENERAL, initialDimension, -32767, 32768, "Dimension where to return player in if timer ran out");
         initialTime = cfg.getInt("initialTime", CATEGORY_GENERAL, initialTime, 0, 7128000, "Initial time that is given to new players");
+        shardTime = cfg.getInt("shardTime", CATEGORY_GENERAL, shardTime, 0, 7128000, "How long a single shard should last in Shard Processor (in ticks)");
+        shardTimeMultiplier = cfg.getInt("shardTimeMultiplier", CATEGORY_GENERAL, shardTimeMultiplier, 0, 7128000, "How many ticks will be added per shard destruction tick");
+        pearlTime = cfg.getInt("pearlTime", CATEGORY_GENERAL, pearlTime, 0, 7128000, "How long a single Ender Pearl should last in Shard Processor (in ticks)");
         keepInventoryOnDeathInForeignDimensions = cfg.getBoolean("keepInventoryOnDeathInForeignDimensions", CATEGORY_GENERAL, keepInventoryOnDeathInForeignDimensions, "Should inventory be kept for players who died in \"not safe\" dimension?");
+        keepTimeOnDeath = cfg.getBoolean("keepTimeOnDeath", CATEGORY_GENERAL, keepTimeOnDeath, "Should time be kept for players upon death?");
         hardcoreTimeLimit = cfg.getBoolean("hardcoreTimeLimit", CATEGORY_GENERAL, hardcoreTimeLimit, "Should player be killed when time ran out. Inventory will not be kept!");
         hudVisible = cfg.getBoolean("hudVisible", CATEGORY_GENERAL, hudVisible, "Should Time HUD be displayed always or just when in foreign dimension? true = always.");
         cfg.setCategoryPropertyOrder(CATEGORY_GENERAL, order);

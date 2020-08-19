@@ -1,5 +1,6 @@
 package com.cwelth.intimepresence.gui.shardprocessor;
 
+import com.cwelth.intimepresence.Config;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.ClientPresenceTimeRenderer;
 import com.cwelth.intimepresence.gui.CommonContainer;
@@ -97,8 +98,8 @@ public class ShardProcessorGUIContainer<TE extends CommonTE, CNT extends CommonC
 
         drawDigitalString(getTimeString(te.timeStored));
         drawBurnTime(61, 74, te.burnTime, te.burnTimeInitial);
-        drawBurnTime(79, 74, te.pearlTime, 1000);
-        drawBurnTime(97, 74, te.shardTime, 600);
+        drawBurnTime(79, 74, te.pearlTime, Config.pearlTime);
+        drawBurnTime(97, 74, te.shardTime, Config.shardTime);
 
         if(te.attachedTE == null)drawCenteredString(Minecraft.getMinecraft().fontRenderer, I18n.format("shardprocessor.notm"),guiLeft + WIDTH/2, guiTop + 58, 0xFFFFFFFF);
 

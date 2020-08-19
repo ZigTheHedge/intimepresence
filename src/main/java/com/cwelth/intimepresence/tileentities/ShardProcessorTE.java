@@ -1,5 +1,6 @@
 package com.cwelth.intimepresence.tileentities;
 
+import com.cwelth.intimepresence.Config;
 import com.cwelth.intimepresence.ModMain;
 import com.cwelth.intimepresence.gui.ShardProcessorItemHandler;
 import com.cwelth.intimepresence.items.AllItems;
@@ -83,7 +84,7 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                 if(pearlTime == 0) {
                     if (!enderPearlSlot.getStackInSlot(0).isEmpty() && enderPearlSlot.getStackInSlot(0).getItem() == Items.ENDER_PEARL)
                     {
-                        pearlTime = 1000;
+                        pearlTime = Config.pearlTime;
                         enderPearlSlot.getStackInSlot(0).shrink(1);
                         ModMain.network.sendToAllAround(new SyncShardProcessor(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
                                 pos.getX(), pos.getY(), pos.getZ(), 64D));
@@ -98,7 +99,7 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
                 if(shardTime == 0) {
                     if (!dimshardsSlot.getStackInSlot(0).isEmpty() && dimshardsSlot.getStackInSlot(0).getItem() == AllItems.dimensionalShards)
                     {
-                        shardTime = 600;
+                        shardTime = Config.shardTime;
                         dimshardsSlot.getStackInSlot(0).shrink(1);
                         ModMain.network.sendToAllAround(new SyncShardProcessor(this), new NetworkRegistry.TargetPoint(world.provider.getDimension(),
                                 pos.getX(), pos.getY(), pos.getZ(), 64D));
@@ -110,7 +111,7 @@ public class ShardProcessorTE extends CommonTE implements ITickable, ICapability
             if(shardTime > 0 && pearlTime > 0 && burnTime > 0)
             {
                 shardTime--;
-                timeStored++;
+                timeStored += Config.shardTimeMultiplier;
                 markDirty();
                 sendUpdates();
             }

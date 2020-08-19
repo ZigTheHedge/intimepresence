@@ -77,7 +77,7 @@ public class CapabilityEvents {
         IGhostPlayer newCap = player.getCapability(GhostPlayerProvider.GHOST_PLAYER_CAPABILITY, null);
         IGhostPlayer oldCap = event.getOriginal().getCapability(GhostPlayerProvider.GHOST_PLAYER_CAPABILITY, null);
         newCap.copyPlayer(oldCap);
-        if (event.isWasDeath())
+        if (event.isWasDeath() && !Config.keepTimeOnDeath)
             newCap.setPresenceTime(0);
     }
 

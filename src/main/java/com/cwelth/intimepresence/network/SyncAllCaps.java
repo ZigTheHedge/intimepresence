@@ -26,13 +26,13 @@ public class SyncAllCaps implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        entId = ByteBufUtils.readVarInt(buf, 4);
+        entId = ByteBufUtils.readVarInt(buf, 5);
         nbt = ByteBufUtils.readTag(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeVarInt(buf, entId, 4);
+        ByteBufUtils.writeVarInt(buf, entId, 5);
         ByteBufUtils.writeTag(buf, nbt);
     }
 
